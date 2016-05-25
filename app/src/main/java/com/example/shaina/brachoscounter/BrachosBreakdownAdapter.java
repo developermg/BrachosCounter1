@@ -20,7 +20,7 @@ public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
     private int mRowLayoutResourceId, mRowTextViewResourceId;
 
     public BrachosBreakdownAdapter(Context context, ArrayList<String> brachosDescription,
-                                   ArrayList<String> brachosAmount, int rowResourceId, int rowTextViewResourceId) {
+                                   ArrayList<Integer> brachosAmount, int rowResourceId, int rowTextViewResourceId) {
 
         // superclass will handle the String array portion of this, like getCount(), etc.
         super(context, rowResourceId);

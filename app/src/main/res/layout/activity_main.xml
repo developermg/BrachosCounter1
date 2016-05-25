@@ -111,13 +111,13 @@
                 android:onClick="viewTotalBrachos"
                 android:text="@string/view_total" />
 
-
             <Button
                 android:id="@+id/totalBreakdown"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:gravity="center"
                 android:onClick="launchTotalBreakdown"
                 android:text="@string/view_total_breakdown" />
+
             <Button
                 android:id="@+id/clearButton"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"

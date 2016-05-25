@@ -21,13 +21,11 @@ import java.util.ArrayList;
 
 //import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     private final static String sPREFS_FIELDS = "PREFS_FIELDS";
     private final static String sBRACHOS_DESCRIPTION = "BRACHOS_DESCRIPTIONS";
     private final static String sBRACHOS_NUMBERS = "BRACHOS_NUMBERS";
-    final int SINGLE_BRACHOS_REQUEST_CODE = 1;
     final int MULTI_BRACHOS_REQUEST_CODE = 2;
     final int MULTI_BRACHOS_MULTIPLE_REQUEST_CODE = 3;
     ArrayList<String> brachosDescriptions;
@@ -36,36 +34,36 @@ public class MainActivity extends AppCompatActivity
     ArrayList<Integer> brachosNumbersToAdd;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
-    {
-        super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_main);
-        brachosDescriptions = new ArrayList<> ();
-        brachosNumbers = new ArrayList<> ();
-        brachosDescriptionsToAdd = new ArrayList<> ();
-        brachosNumbersToAdd = new ArrayList<> ();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        brachosDescriptions = new ArrayList<>();
+        brachosDescriptions.add("help!");
+        brachosDescriptions.add("Crazy!");
+        brachosNumbers = new ArrayList<>();
+        brachosDescriptionsToAdd = new ArrayList<>();
+        brachosNumbersToAdd = new ArrayList<>();
     }
 
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult (requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case MULTI_BRACHOS_MULTIPLE_REQUEST_CODE:
-                    ArrayList<Integer> numbers = data.getIntegerArrayListExtra ("BRACHOS_NUMBERS");
-                    if (!numbers.isEmpty ()) {
-                        brachosDescriptionsToAdd.addAll (
-                                data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"));
-                        brachosNumbersToAdd.addAll (numbers);
+                    ArrayList<Integer> numbers = data.getIntegerArrayListExtra("BRACHOS_NUMBERS");
+                    if (!numbers.isEmpty()) {
+                        brachosDescriptionsToAdd.addAll(
+                                data.getStringArrayListExtra("BRACHOS_DESCRIPTIONS"));
+                        brachosNumbersToAdd.addAll(numbers);
                     }
                     break;
                 case MULTI_BRACHOS_REQUEST_CODE:
-                    int number = data.getIntExtra ("BRACHOS_NUMBER", 1);
+                    int number = data.getIntExtra("BRACHOS_NUMBER", 1);
                     if (number > 0) {
-                        brachosDescriptionsToAdd.add (data.getStringExtra ("BRACHOS_DESCRIPTION"));
-                        brachosNumbersToAdd.add (number);
+                        brachosDescriptionsToAdd.add(data.getStringExtra("BRACHOS_DESCRIPTION"));
+                        brachosNumbersToAdd.add(number);
                     }
                     break;
 
@@ -73,25 +71,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void launchDaveningPage (View view)
-    {
-        Intent intent = new Intent (this, DaveningActivity.class);
-        startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+    public void launchDaveningPage(View view) {
+        Intent intent = new Intent(this, DaveningActivity.class);
+        startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
-    public void launchAddYourOwnPage (View view)
-    {
-        Intent intent = new Intent (this, AddYourOwnActivity.class);
-        startActivityForResult (intent, MULTI_BRACHOS_REQUEST_CODE);
+    public void launchAddYourOwnPage(View view) {
+        Intent intent = new Intent(this, AddYourOwnActivity.class);
+        startActivityForResult(intent, MULTI_BRACHOS_REQUEST_CODE);
     }
 
-    public void launchFoodDrink (View view)
-    {
-        Intent intent = new Intent (this, BrachosActivity.class);
+    public void launchFoodDrink(View view) {
+        Intent intent = new Intent(this, BrachosActivity.class);
         String[] foodBrachos = {"Hamotzi", "Mezonos", "Hagafen", "Haetz", "Ha'adama", "Shehakol",
-                                "Birkas Hamazon", "Al Hamichya", "Borei Nefashos"};
-        intent.putExtra (getString (R.string.brachosList), foodBrachos);
-        startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+                "Birkas Hamazon", "Al Hamichya", "Borei Nefashos"};
+        intent.putExtra(getString(R.string.brachosList), foodBrachos);
+        startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
     public void launchHolidays(View view) {
@@ -128,33 +123,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart ()
-    {
-        super.onStart ();
+    protected void onStart() {
+        super.onStart();
         // restorePreferencesSavedFromSettingsActivity();
-        restoreNonSettingsActivityPreferences ();
-        addBrachosFromRestoredActivity ();
+        restoreNonSettingsActivityPreferences();
+        addBrachosFromRestoredActivity();
 
     }
 
     //TODO: Do we need an onResume to restore things?
     @Override
-    protected void onResume ()
-    {
-        super.onResume ();
+    protected void onResume() {
+        super.onResume();
        /* applyNightModePreference();
         showHideBackground ();*/
     }
 
     @Override
-    protected void onStop ()
-    {
-        super.onStop ();
-        saveNonSettingsActivityPreferences ();
+    protected void onStop() {
+        super.onStop();
+        saveNonSettingsActivityPreferences();
     }
 
-    private void restorePreferencesSavedFromSettingsActivity ()
-    {
+    private void restorePreferencesSavedFromSettingsActivity() {
         String currentKey;
         String currentDefaultValue;
 
@@ -172,16 +163,15 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void restoreNonSettingsActivityPreferences ()
-    {
-        SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE);
-        String descriptionString = settings.getString (sBRACHOS_DESCRIPTION, "");
-        if (!descriptionString.isEmpty ()) {
-            brachosDescriptions = restoreStringListFromJSON (descriptionString);
-            String brachosNumbersString=settings.getString (sBRACHOS_NUMBERS, "[]");
+    private void restoreNonSettingsActivityPreferences() {
+        SharedPreferences settings = getSharedPreferences(sPREFS_FIELDS, MODE_PRIVATE);
+        String descriptionString = settings.getString(sBRACHOS_DESCRIPTION, "");
+        if (!descriptionString.isEmpty()) {
+            brachosDescriptions = restoreStringListFromJSON(descriptionString);
+            String brachosNumbersString = settings.getString(sBRACHOS_NUMBERS, "[]");
 
 
-            ArrayList brachosArrayList=restoreIntegerListFromJSON (brachosNumbersString);
+            ArrayList brachosArrayList = restoreIntegerListFromJSON(brachosNumbersString);
 
             brachosNumbers = (ArrayList<Integer>) brachosArrayList;
 
@@ -206,17 +196,16 @@ public class MainActivity extends AppCompatActivity
 */
     }
 
-    private void saveNonSettingsActivityPreferences ()
-    {
-        SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE); //MP==0
-        SharedPreferences.Editor settingsEditor = settings.edit ();
+    private void saveNonSettingsActivityPreferences() {
+        SharedPreferences settings = getSharedPreferences(sPREFS_FIELDS, MODE_PRIVATE); //MP==0
+        SharedPreferences.Editor settingsEditor = settings.edit();
 
-        settingsEditor.clear ();
+        settingsEditor.clear();
 
-        String jsonBrachosDescriptions = getJSON (brachosDescriptions);
-        String jsonBrachosNumbers = getJSON (brachosNumbers);
-        settingsEditor.putString (sBRACHOS_DESCRIPTION, jsonBrachosDescriptions);
-        settingsEditor.putString (sBRACHOS_NUMBERS, jsonBrachosNumbers);
+        String jsonBrachosDescriptions = getJSON(brachosDescriptions);
+        String jsonBrachosNumbers = getJSON(brachosNumbers);
+        settingsEditor.putString(sBRACHOS_DESCRIPTION, jsonBrachosDescriptions);
+        settingsEditor.putString(sBRACHOS_NUMBERS, jsonBrachosNumbers);
         // Tax and tip are derived from values stored automatically via Settings Activity
         // So we need to store only the other two EditTexts
         //TODO: add our prefs
@@ -225,66 +214,61 @@ public class MainActivity extends AppCompatActivity
         // settingsEditor.putString (mSUBTOTAL_PREF_KEY, mSubTotalField.getText ().toString ());
         //settingsEditor.putString (mPAYERS_PREF_KEY, mPayersField.getText ().toString ());
 
-        settingsEditor.apply ();
+        settingsEditor.apply();
     }
 
-    private String getJSON (ArrayList obj)
-    {
-        Gson gson = new Gson ();
-        String json = gson.toJson (obj);
+    private String getJSON(ArrayList obj) {
+        Gson gson = new Gson();
+        String json = gson.toJson(obj);
 
 
         return json;
     }
 
-    private ArrayList<Integer> restoreIntegerListFromJSON (String json)
-    {
+    private ArrayList<Integer> restoreIntegerListFromJSON(String json) {
 
-        Gson gson = new Gson ();
+        Gson gson = new Gson();
         // This is how you tell gson about the generic type you want to get back:
-        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
-        ArrayList<Integer> obj = gson.fromJson (json,type);
+        Type type = new TypeToken<ArrayList<Integer>>() {
+        }.getType();
+        ArrayList<Integer> obj = gson.fromJson(json, type);
         return obj;
     }
-    private ArrayList<String> restoreStringListFromJSON (String json)
-    {
-        Gson gson = new Gson ();
-        ArrayList<String> obj = gson.fromJson (json, ArrayList.class);
+
+    private ArrayList<String> restoreStringListFromJSON(String json) {
+        Gson gson = new Gson();
+        ArrayList<String> obj = gson.fromJson(json, ArrayList.class);
         return obj;
     }
 
 
-    private void addBrachosFromRestoredActivity ()
-    {
+    private void addBrachosFromRestoredActivity() {
         //TODO: Increment instead of add all
-        brachosDescriptions.addAll (brachosDescriptionsToAdd);
-        brachosDescriptionsToAdd.clear ();
+        brachosDescriptions.addAll(brachosDescriptionsToAdd);
+        brachosDescriptionsToAdd.clear();
 
-        brachosNumbers.addAll (brachosNumbersToAdd);
-        brachosNumbersToAdd.clear ();
+        brachosNumbers.addAll(brachosNumbersToAdd);
+        brachosNumbersToAdd.clear();
     }
 
-    public void viewTotalBrachos (View view)
-    {
-        viewTotalBrachos ();
+    public void viewTotalBrachos(View view) {
+        viewTotalBrachos();
     }
 
-    private void viewTotalBrachos ()
-    {
+    private void viewTotalBrachos() {
         int counter = 0;
-     for (Integer brachosNumber : brachosNumbers) {
+        for (Integer brachosNumber : brachosNumbers) {
             counter += brachosNumber;
         }
-        String snackbarText=getString(R.string.total_brachos) + " " +counter;
-      showSnackbar(snackbarText);
+        String snackbarText = getString(R.string.total_brachos) + " " + counter;
+        showSnackbar(snackbarText);
     }
 
-    public void clearBrachos (View view)
-    {
+    public void clearBrachos(View view) {
         //call addBrachosFromRestoredActivity to flush the 'ToAdd' ArrayLists if click before they are flushed
-        addBrachosFromRestoredActivity ();
-        brachosDescriptions.clear ();
-        brachosNumbers.clear ();
+        addBrachosFromRestoredActivity();
+        brachosDescriptions.clear();
+        brachosNumbers.clear();
         showSnackbar("Brachos cleared.");
     }
 
@@ -297,19 +281,18 @@ public class MainActivity extends AppCompatActivity
         set(key, json);
     }*/
 
-    @Override public boolean onCreateOptionsMenu (Menu menu)
-    {
-        getMenuInflater ().inflate (R.menu.menu_main, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true; //super.onCreateOptionsMenu (menu);
     }
 
-    @Override public boolean onOptionsItemSelected (MenuItem item)
-    {
-        int id = item.getItemId ();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id)
-        {
+        switch (id) {
             case R.id.action_settings: {
                 //showSettingsActivity ();
                 return true;
@@ -321,68 +304,65 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        return super.onOptionsItemSelected (item);
+        return super.onOptionsItemSelected(item);
     }
 
     // LG work-around
     @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean isOldLG = ((keyCode == KeyEvent.KEYCODE_MENU) &&
-                                   (Build.VERSION.SDK_INT <= 16) &&
-                                   (Build.MANUFACTURER.compareTo ("LGE") == 0));
+                (Build.VERSION.SDK_INT <= 16) &&
+                (Build.MANUFACTURER.compareTo("LGE") == 0));
 
         //noinspection SimplifiableConditionalExpression
-        return isOldLG ? true : super.onKeyDown (keyCode, event);
+        return isOldLG ? true : super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public boolean onKeyUp (int keyCode, KeyEvent event)
-    {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_MENU) &&
                 (Build.VERSION.SDK_INT <= 16) &&
-                (Build.MANUFACTURER.compareTo ("LGE") == 0)) {
-            openOptionsMenu ();
+                (Build.MANUFACTURER.compareTo("LGE") == 0)) {
+            openOptionsMenu();
             return true;
         }
-        return super.onKeyUp (keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
 
-    private void showSnackbar(String snackbarText){
-        final View cl = findViewById (R.id.activity_main);
-        Snackbar sb = Snackbar.make (cl, snackbarText,
+    private void showSnackbar(String snackbarText) {
+        final View cl = findViewById(R.id.activity_main);
+        Snackbar sb = Snackbar.make(cl, snackbarText,
                 Snackbar.LENGTH_LONG);
         sb.show();
     }
+
     // This method is called from the onClick property of the menu item "About"
-    @SuppressWarnings ( {"UnusedParameters", "unused"})
-    public void showAbout (MenuItem item)
-    {
-        showAbout ();
+    @SuppressWarnings({"UnusedParameters", "unused"})
+    public void showAbout(MenuItem item) {
+        showAbout();
     }
-    private void showAbout ()
-    {
+
+    private void showAbout() {
 
         // Create listener for use with dialog window (could also be created anonymously in setButton...
         DialogInterface.OnClickListener dialogOnClickListener =
-                new DialogInterface.OnClickListener ()
-                {
+                new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick (DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         // Nothing needed to do here
                     }
                 };
 
         // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (MainActivity.this).create ();
-        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
-        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
-        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
-                getString (R.string.OK), dialogOnClickListener);
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialogAbout.setTitle(getString(R.string.aboutDialog_title));
+        ;
+        alertDialogAbout.setMessage(getString(R.string.aboutDialog_banner));
+        alertDialogAbout.setButton(DialogInterface.BUTTON_NEUTRAL,
+                getString(R.string.OK), dialogOnClickListener);
 
         // Show the dialog window
-        alertDialogAbout.show ();
+        alertDialogAbout.show();
     }
 }
 
