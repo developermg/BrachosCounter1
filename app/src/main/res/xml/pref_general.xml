@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="example_switch"
+        android:summary="@string/male_option_description"
+        android:title="@string/male_option" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="example_switch"
+        android:summary="@string/yotzer_hameoros_description"
+        android:title="@string/yotzer_hameoros_option" />
+
+
+</PreferenceScreen>

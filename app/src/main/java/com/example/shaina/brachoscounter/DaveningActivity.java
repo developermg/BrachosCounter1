@@ -177,7 +177,7 @@ public class DaveningActivity extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_settings: {
-                //showSettingsActivity ();
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             }
             case R.id.action_view_total: {
