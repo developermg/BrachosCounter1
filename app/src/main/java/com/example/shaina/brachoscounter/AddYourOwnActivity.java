@@ -3,6 +3,7 @@ package com.example.shaina.brachoscounter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -16,6 +17,7 @@ public class AddYourOwnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_your_own);
+        setupActionBar();
         numberPicker = (NumberPicker) findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(100);
@@ -27,6 +29,19 @@ public class AddYourOwnActivity extends AppCompatActivity {
 
     //TODO: add back button
 
+    private void setupActionBar() {
+        try {
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException nullPointerException) {
+            //nullPointerException.printStackTrace();
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     public void addBracha(View view) {
         if (numberIsZeroAndContainsText()){
             displayMessage("Zero is not a valid number");
