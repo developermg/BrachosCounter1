@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Brachos Counter</string>
+    <string name="action_settings">Settings</string>
+    <string name="items_checked_colon">"Items Checked: "</string>
+    <string name="semicolon">"; "</string>
+    <string name="sum_colon">"Sum: "</string>
+    <string name="Shachris">Shacharis</string>
+    <string name="Birchos_HaShachar">Birchos HaShachar</string>
+    <string name="Birchos_HaTorah">Birchos HaTorah</string>
+    <string name="Psukei_DZimra">Pesukei DZimra</string>
+    <string name="Birchos_Krias_Shema">Birchos Krias Shema</string>
+    <string name="Shemoneh_Esrei">Shemoneh Esrei</string>
+    <string name="Mincha">Mincha</string>
+    <string name="Maariv">Maariv</string>
+    <string name="Hallel">Hallel</string>
+    <string name="Mussaf">Mussaf</string>
+    <string name="main_screen_instructions">Select a category to add brachos.</string>
+    <string name="view_totals">View Totals</string>
+    <string name="add_to_total">Add to Total</string>
+    <string name="view_total_breakdown">Breakdown</string>
+    <string name="clear">Clear</string>
+    <string name="view_total">View Total</string>
+    <string name="brachosList">brachosList</string>
+    <string name="total_brachos">Total Brachos:</string>
+</resources>

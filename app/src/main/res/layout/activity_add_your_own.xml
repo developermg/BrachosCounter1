@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+>
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="65dp"
+        android:id="@+id/addSymbol"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="@dimen/button_margin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_add_black_24dp"
+        android:onClick="addBracha"/>
+
+    <EditText
+        android:layout_marginTop="30dp"
+        android:layout_width="150dp"
+        android:layout_height="65dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/editText"
+        />
+    <NumberPicker
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:id="@+id/numberPicker"
+        android:layout_marginRight="20dp"
+        android:background="@color/colorBackground"/>
+
+
+
+</LinearLayout>
+
