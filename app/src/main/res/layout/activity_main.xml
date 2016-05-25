@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
-        android:textAlignment="center"
         android:text="@string/main_screen_instructions"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorPrimaryDark" />
 
@@ -36,8 +36,8 @@
             <ImageButton
                 android:id="@+id/daveningButton"
                 android:layout_width="20dip"
-                android:layout_column="0"
                 android:layout_height="100dip"
+                android:layout_column="0"
                 android:layout_weight="1"
                 android:background="@drawable/davening"
                 android:onClick="launchDaveningPage" />
@@ -98,31 +98,32 @@
             </LinearLayout>
         </TableRow>
         <TableRow
+            style="@android:style/ButtonBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="60dp"
             android:layout_gravity="center"
-            style="@android:style/ButtonBar">
+            android:layout_marginTop="60dp">
 
             <Button
                 android:id="@+id/totalsButton"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:gravity="center"
-                android:text="@string/view_total"
-                android:onClick="viewTotalBrachos"/>
+                android:onClick="viewTotalBrachos"
+                android:text="@string/view_total" />
 
 
             <Button
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:id="@+id/totalBreakdown"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:gravity="center"
+                android:onClick="launchTotalBreakdown"
                 android:text="@string/view_total_breakdown" />
             <Button
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:id="@+id/clearButton"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:gravity="center"
-                android:text="@string/clear"
-                android:onClick="clearBrachos"/>
+                android:onClick="clearBrachos"
+                android:text="@string/clear" />
 
 
 
