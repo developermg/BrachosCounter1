@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -120,12 +119,13 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(getString(R.string.brachosList), miscBrachos);
         startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
-    
-  /*  public void launchTotalBreakdown(View view) {
-        Intent intent = new Intent(this, BrachosBreakdown.class);
+
+    public void launchTotalBreakdown(View view) {
+        Intent intent = new Intent(this, BrachosBreakdownActivity.class);
         intent.putExtra("description", brachosDescriptions);
         intent.putExtra("amount", brachosNumbers);
-    }*/
+        startActivity(intent);
+    }
 
     @Override
     protected void onStart ()
