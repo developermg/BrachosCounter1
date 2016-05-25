@@ -25,4 +25,5 @@
     <string name="aboutDialog_title">About</string>
     <string name="OK">OK</string>
     <string name="aboutDialog_banner">Created by Meira Goldberg and Shaina Hirschman in MCO 451.\nMuch thanks to Professor Abrahamson.\nMake your brachos count!</string>
+    <string name="about">About</string>
 </resources>

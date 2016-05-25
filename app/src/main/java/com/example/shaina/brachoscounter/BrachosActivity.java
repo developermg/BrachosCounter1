@@ -1,7 +1,9 @@
 package com.example.shaina.brachoscounter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -122,12 +124,41 @@ public class BrachosActivity extends AppCompatActivity {
 
     }
 
+    // This method is called from the onClick property of the menu item "About"
+    @SuppressWarnings ( {"UnusedParameters", "unused"})
+    public void showAbout (MenuItem item)
+    {
+        showAbout ();
+    }
+    private void showAbout ()
+    {
+
+        // Create listener for use with dialog window (could also be created anonymously in setButton...
+        DialogInterface.OnClickListener dialogOnClickListener =
+                new DialogInterface.OnClickListener ()
+                {
+                    @Override
+                    public void onClick (DialogInterface dialog, int which)
+                    {
+                        // Nothing needed to do here
+                    }
+                };
+
+        // Create dialog window
+        AlertDialog alertDialogAbout = new AlertDialog.Builder (BrachosActivity.this).create ();
+        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
+        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
+        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
+                getString (R.string.OK), dialogOnClickListener);
+
+        // Show the dialog window
+        alertDialogAbout.show ();
+    }
     private void getSelectedBrachosDescriptions(){
 
     }
     @Override
     public void finish() {
-        Toast.makeText(this, " in toast", Toast.LENGTH_LONG).show();
         Intent results = new Intent();
         results.putStringArrayListExtra("BRACHOS_DESCRIPTIONS", mListOfCheckedItems);
         results.putIntegerArrayListExtra("BRACHOS_NUMBERS", getArrayListOfBrachosNumbers());

@@ -1,10 +1,13 @@
 package com.example.shaina.brachoscounter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -166,6 +169,54 @@ public class DaveningActivity extends AppCompatActivity {
         return brachosDescriptions;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id==android.R.id.home){
+            super.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // This method is called from the onClick property of the menu item "About"
+    @SuppressWarnings ( {"UnusedParameters", "unused"})
+    public void showAbout (MenuItem item)
+    {
+        showAbout ();
+    }
+    private void showAbout ()
+    {
+
+        // Create listener for use with dialog window (could also be created anonymously in setButton...
+        DialogInterface.OnClickListener dialogOnClickListener =
+                new DialogInterface.OnClickListener ()
+                {
+                    @Override
+                    public void onClick (DialogInterface dialog, int which)
+                    {
+                        // Nothing needed to do here
+                    }
+                };
+
+        // Create dialog window
+        AlertDialog alertDialogAbout = new AlertDialog.Builder (DaveningActivity.this).create ();
+        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
+        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
+        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
+                getString (R.string.OK), dialogOnClickListener);
+
+        // Show the dialog window
+        alertDialogAbout.show ();
+    }
     private void prepareListData() {
         daveningCategoryNames = new ArrayList<String>();
         // Add child data
