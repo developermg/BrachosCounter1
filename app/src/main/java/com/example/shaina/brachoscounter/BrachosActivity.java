@@ -102,22 +102,33 @@ public class BrachosActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    @Override public boolean onOptionsItemSelected (MenuItem item)
+    {
+        int id = item.getItemId ();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id)
+        {
+            case R.id.action_settings: {
+                //showSettingsActivity ();
+                return true;
+            }
+            case R.id.action_view_total: {
+                //TODO: viewTotalBrachos();
+                return true;
+            }
+            case R.id.about:{
+                showAbout();
+                return true;
+            }
+            case android.R.id.home: {
+                onBackPressed();
+                return true;
+            }
+
         }
-        if (id==android.R.id.home){
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+        return super.onOptionsItemSelected (item);
     }
 
     private void getSelectedBrachosNumbers(){

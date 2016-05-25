@@ -318,6 +318,10 @@ public class MainActivity extends AppCompatActivity
                 viewTotalBrachos();
                 return true;
             }
+            case R.id.about:{
+                showAbout();
+                return true;
+            }
 
         }
 
