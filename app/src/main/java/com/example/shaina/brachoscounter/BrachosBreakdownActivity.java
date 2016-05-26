@@ -4,14 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class BrachosBreakdownActivity extends AppCompatActivity {
+public class BrachosBreakdownActivity extends BrachosCounterActivity {
 
     private ArrayList<String> mBrachosDescription;
     private ArrayList<Integer> mBrachosAmount;
@@ -63,8 +62,14 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
 
     private void setupListView() {
         ListView list = (ListView) findViewById(R.id.listView);
-        mBrachosAdapter = new BrachosBreakdownAdapter(this, mBrachosDescription, mBrachosAmount, R.layout.brachos_breakdown_row,
-                R.id.brachaBreakdown);
+        ArrayList<String> descriptions = getBrachosDescriptions();
+        ArrayList<Integer> numbers = getBrachosNumbers();
+        String[] descriptionsAndNumbers = new String[descriptions.size()];
+        for (int i = 0; i < descriptions.size(); i++) {
+            descriptionsAndNumbers[i] = descriptions.get(i) + "  " + numbers.get(i);
+        }
+        mBrachosAdapter = new BrachosBreakdownAdapter(this, descriptionsAndNumbers,
+                R.layout.brachos_breakdown_row, R.id.brachaBreakdown);
         list.setAdapter(mBrachosAdapter);
     }
 

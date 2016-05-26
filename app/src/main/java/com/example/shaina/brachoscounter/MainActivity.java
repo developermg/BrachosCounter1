@@ -125,8 +125,8 @@ public class MainActivity extends BrachosCounterActivity
 
     public void launchTotalBreakdown(View view) {
         Intent intent = new Intent(this, BrachosBreakdownActivity.class);
-        intent.putStringArrayListExtra("description", brachosDescriptions);
-        intent.putIntegerArrayListExtra("amount", brachosNumbers);
+        intent.putStringArrayListExtra("description", getBrachosDescriptions());
+        intent.putIntegerArrayListExtra("amount", getBrachosNumbers());
         startActivity(intent);
     }
 

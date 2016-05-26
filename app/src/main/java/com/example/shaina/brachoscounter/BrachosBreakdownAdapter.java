@@ -21,20 +21,19 @@ public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
     private ArrayList<String> mBrachosDescription;
     private ArrayList<Integer> mBrachosAmount;
 
-    /*public BrachosBreakdownAdapter(Context context, ArrayList<String> brachosDescription,
-                                   ArrayList<Integer> brachosAmount, int rowResourceId,
-                                   int rowTextViewResourceId) { */
-    public BrachosBreakdownAdapter(Context context, int rowResourceId, int rowTextViewResourceId) {
+    public BrachosBreakdownAdapter(Context context, String[] objs, int rowResourceId,
+                                   int rowTextViewResourceId) {
+        //public BrachosBreakdownAdapter(Context context, int rowResourceId, int rowTextViewResourceId) {
 
         // superclass will handle the String array portion of this, like getCount(), etc.
-        super(context, rowResourceId);
+        super(context, rowResourceId, objs);
 
         // store a reference to the Context
         mContext = context;
 
         //store a reference to arraylists
-        mBrachosDescription = getBrachosDescriptions();
-        mBrachosAmount = getBrachosNumbers();
+      /*  mBrachosDescription = brachosDescription;
+        mBrachosAmount = brachosAmount;*/
 
         // We will need this later to inflate each new row
         mLayoutInflater = LayoutInflater.from(context);
