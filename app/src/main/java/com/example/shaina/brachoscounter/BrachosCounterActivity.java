@@ -7,17 +7,11 @@ package com.example.shaina.brachoscounter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,6 +30,12 @@ public class BrachosCounterActivity extends AppCompatActivity {
     Boolean mPrefMale;
     Boolean mPrefYotzerHameoros;
 
+    public void launchTotalBreakdown(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers){
+        Intent intent = new Intent(this, BrachosBreakdownActivity.class);
+        intent.putStringArrayListExtra("description", brachosDescriptions);
+        intent.putIntegerArrayListExtra("amount", brachosNumbers);
+        startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,27 +43,6 @@ public class BrachosCounterActivity extends AppCompatActivity {
         setupActionBar();
 
     }
-
-  /*  private void restorePreferencesSavedFromSettingsActivity ()
-    {
-        String currentKey;
-        String currentDefaultValue;
-
-        // Get handle to custom preferences (not from settings menu)
-        // Used for persisting state to storage
-
-        // First, get handle to user settings/preferences
-        SharedPreferences defaultSharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        //TODO: Set to our preferences!!!
-        // Show Background Picture Preference
-        currentKey = getString(R.string.male_option);
-        mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
-
-        currentKey = getString(R.string.male_option);
-        mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
-    }*/
 
 
 
@@ -83,7 +62,12 @@ public class BrachosCounterActivity extends AppCompatActivity {
             //nullPointerException.printStackTrace();
         }
     }
-
+    protected void launchSettings(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION, brachosDescriptions);
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS, brachosNumbers);
+        startActivity(intent);
+    }
     protected void addBrachos(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers, String description, int number){
         brachosDescriptions.add(description);
         brachosNumbers.add(number);
@@ -96,12 +80,10 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
     protected int getTotalBrachos (ArrayList<Integer> brachosNumbers)
     {
-        Toast.makeText(this, "arrayList:"+brachosNumbers, Toast.LENGTH_LONG).show();
         int counter = 0;
         for (Integer brachosNumber : brachosNumbers) {
             counter += brachosNumber;
         }
-        String snackbarText=getString(R.string.total_brachos) + " " +counter;
         return counter;
 
     }
@@ -136,7 +118,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
         }
     }*/
-    private void saveNonSettingsActivityPreferences (ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers)
+    protected void saveNonSettingsActivityPreferences (ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers)
     {
 
         SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE); //MP==0
@@ -184,7 +166,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
     {
         showAbout ();
     }
-    private void showAbout ()
+    protected void showAbout ()
     {
 
         // Create listener for use with dialog window (could also be created anonymously in setButton...
@@ -199,7 +181,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
                 };
 
         // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder(getApplicationContext()).create ();
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(this).create ();
         alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));
         alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
         alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,

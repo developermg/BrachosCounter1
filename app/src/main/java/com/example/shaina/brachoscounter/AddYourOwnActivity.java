@@ -2,6 +2,7 @@ package com.example.shaina.brachoscounter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,37 +13,51 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class AddYourOwnActivity extends BrachosCounterActivity {
     private NumberPicker numberPicker;
     private EditText editText;
+    private ArrayList<Integer> mTotalBrachosNumbers;
+    private ArrayList<String> mTotalBrachosDescriptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_your_own);
-        setupActionBar();
+        processIncomingData();
+        setupNumberPicker();
+
+        editText = (EditText) findViewById(R.id.editText);
+    }
+    private void processIncomingData(){
+        Intent intent = getIntent();
+        mTotalBrachosDescriptions = intent.getStringArrayListExtra(sBRACHOS_DESCRIPTION);
+        mTotalBrachosNumbers = intent.getIntegerArrayListExtra(sBRACHOS_NUMBERS);
+    }
+
+    private void setupNumberPicker(){
         numberPicker = (NumberPicker) findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(100);
         numberPicker.setWrapSelectorWheel(false);
         numberPicker.setValue(0);
-
-        editText = (EditText) findViewById(R.id.editText);
     }
-
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {
         int id = item.getItemId ();
-
-        //noinspection SimplifiableIfStatement
         switch (id)
         {
             case R.id.action_settings: {
-                //showSettingsActivity ();
+                launchSettings(mTotalBrachosDescriptions,mTotalBrachosNumbers);
                 return true;
             }
             case R.id.action_view_total: {
-                //TODO: viewTotalBrachos();
+                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(mTotalBrachosNumbers));
+                return true;
+            }
+            case R.id.action_view_total_breakdown:{
+                launchTotalBreakdown(mTotalBrachosDescriptions,mTotalBrachosNumbers);
                 return true;
             }
             case R.id.about:{
@@ -50,51 +65,23 @@ public class AddYourOwnActivity extends BrachosCounterActivity {
                 return true;
             }
             case android.R.id.home: {
-                onBackPressed();
+                super.finish();
+                return true;
+            }
+            case R.id.action_clear:{
+                clearBrachos(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+                showSnackbar("Brachos cleared.");
                 return true;
             }
 
         }
-
         return super.onOptionsItemSelected (item);
     }
-
-    // This method is called from the onClick property of the menu item "About"
-    @SuppressWarnings ( {"UnusedParameters", "unused"})
-    public void showAbout (MenuItem item)
-    {
-        showAbout ();
-    }
-    private void showAbout ()
-    {
-
-        // Create listener for use with dialog window (could also be created anonymously in setButton...
-        DialogInterface.OnClickListener dialogOnClickListener =
-                new DialogInterface.OnClickListener ()
-                {
-                    @Override
-                    public void onClick (DialogInterface dialog, int which)
-                    {
-                        // Nothing needed to do here
-                    }
-                };
-
-        // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (AddYourOwnActivity.this).create ();
-        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
-        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
-        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
-                getString (R.string.OK), dialogOnClickListener);
-
-        // Show the dialog window
-        alertDialogAbout.show ();
-    }
-    private void setupActionBar() {
-        try {
-            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException nullPointerException) {
-            //nullPointerException.printStackTrace();
-        }
+    private void showSnackbar(String snackbarText){
+        final View cl = findViewById (R.id.activity_add_your_own);
+        Snackbar sb = Snackbar.make (cl, snackbarText,
+                Snackbar.LENGTH_LONG);
+        sb.show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,18 +91,22 @@ public class AddYourOwnActivity extends BrachosCounterActivity {
     }
     public void addBracha(View view) {
         if (numberIsZeroAndContainsText()){
-            displayMessage("Zero is not a valid number");
+            showSnackbar("Zero is not a valid number");
 
         }
         else if(numberIsGreaterThanZeroAndNoDescription()){
-            displayMessage("Description required.");
+            showSnackbar("Description required.");
         }
         else{
+            addBrachos();
             finish();
         }
 
     }
 
+    private void addBrachos(){
+        addBrachos(mTotalBrachosDescriptions,mTotalBrachosNumbers,editText.getText().toString(),numberPicker.getValue());
+    }
     private boolean numberIsZeroAndContainsText(){
         return (numberPicker.getValue()==0 && !editText.getText().toString().trim().isEmpty());
     }
@@ -125,20 +116,19 @@ public class AddYourOwnActivity extends BrachosCounterActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        customOnStop(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+    }
+    @Override
     public void finish() {
         Intent results = new Intent();
-        results.putExtra("BRACHOS_NUMBER", numberPicker.getValue());
-        results.putExtra("BRACHOS_DESCRIPTION", editText.getText().toString());
+        results.putIntegerArrayListExtra(sBRACHOS_NUMBERS, mTotalBrachosNumbers);
+        results.putStringArrayListExtra(sBRACHOS_DESCRIPTION, mTotalBrachosDescriptions);
         setResult(RESULT_OK, results);
 
         super.finish();
     }
 
 
-    private void displayMessage(String message){
-        Toast.makeText(
-                getApplicationContext(),
-                message, Toast.LENGTH_SHORT)
-                .show();
-    }
 }

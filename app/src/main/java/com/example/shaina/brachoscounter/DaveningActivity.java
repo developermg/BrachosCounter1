@@ -39,7 +39,6 @@ public class DaveningActivity extends BrachosCounterActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_davening);
-        setupActionBar();
         processIncomingData();
         restorePreferencesSavedFromSettingsActivity();
         // get the listview
@@ -79,16 +78,6 @@ public class DaveningActivity extends BrachosCounterActivity {
 
 
 
-        // ListView Group collapsed listener
-       /* expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-
-                listAdapter.uncheckAllInGroup(groupPosition);
-            }
-        });*/
-
         // ListView on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -96,40 +85,9 @@ public class DaveningActivity extends BrachosCounterActivity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
 
-                /*Toast.makeText(
-                        getApplicationContext(),
-                        daveningCategoryNames.get(groupPosition)
-                                + " : "
-                                + brachosNames.get(
-                                daveningCategoryNames.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();*/
                 return false;
             }
         });
-
-        //Button button = (Button) findViewById (R.id.button);
-        //final TextView textView = (TextView) findViewById (R.id.textView);
-
-
-       /* button.setOnClickListener (new View.OnClickListener ()
-        {
-            public void onClick (View v)
-            {
-                int countOfItems = 0, sumOfNumericValueOfItems=0;
-                for (int mGroupPosition = 0;
-                     mGroupPosition < listAdapter.getGroupCount ();
-                     mGroupPosition++) {
-
-                    countOfItems+= listAdapter.getNumberOfCheckedItemsInGroup (mGroupPosition);
-                    sumOfNumericValueOfItems+= listAdapter.getSumOfCheckedItemsInGroup (mGroupPosition);
-
-                }
-                textView.setText (getString(R.string.items_checked_colon) + countOfItems
-                        + getString(R.string.semicolon)
-                        + getString(R.string.sum_colon) + sumOfNumericValueOfItems);
-            }
-        });*/
 
     }
 
@@ -182,13 +140,6 @@ public class DaveningActivity extends BrachosCounterActivity {
     }
 
 
-    private void setupActionBar() {
-        try {
-            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException nullPointerException) {
-            //nullPointerException.printStackTrace();
-        }
-    }
     private ArrayList<String> getSelectedBrachosDescriptions()
 
     {
@@ -214,16 +165,18 @@ public class DaveningActivity extends BrachosCounterActivity {
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {
         int id = item.getItemId ();
-
-        //noinspection SimplifiableIfStatement
         switch (id)
         {
             case R.id.action_settings: {
-                startActivity(new Intent(this, SettingsActivity.class));
+                launchSettings(totalBrachosDescriptions,totalBrachosNumbers);
                 return true;
             }
             case R.id.action_view_total: {
                 showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(totalBrachosNumbers));
+                return true;
+            }
+            case R.id.action_view_total_breakdown:{
+                launchTotalBreakdown(totalBrachosDescriptions,totalBrachosNumbers);
                 return true;
             }
             case R.id.about:{
@@ -236,7 +189,6 @@ public class DaveningActivity extends BrachosCounterActivity {
             }
             case R.id.action_clear:{
                 clearBrachos(totalBrachosDescriptions,totalBrachosNumbers);
-                Toast.makeText(this, totalBrachosDescriptions.toString(), Toast.LENGTH_LONG).show();
                 showSnackbar("Brachos cleared.");
                 return true;
             }
@@ -253,36 +205,6 @@ public class DaveningActivity extends BrachosCounterActivity {
         sb.show();
     }
 
-    // This method is called from the onClick property of the menu item "About"
-    @SuppressWarnings ( {"UnusedParameters", "unused"})
-    public void showAbout (MenuItem item)
-    {
-        showAbout ();
-    }
-    private void showAbout ()
-    {
-
-        // Create listener for use with dialog window (could also be created anonymously in setButton...
-        DialogInterface.OnClickListener dialogOnClickListener =
-                new DialogInterface.OnClickListener ()
-                {
-                    @Override
-                    public void onClick (DialogInterface dialog, int which)
-                    {
-                        // Nothing needed to do here
-                    }
-                };
-
-        // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (DaveningActivity.this).create ();
-        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));
-        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
-        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
-                getString (R.string.OK), dialogOnClickListener);
-
-        // Show the dialog window
-        alertDialogAbout.show ();
-    }
     private void prepareListData() {
         daveningCategoryNames = new ArrayList<String>();
         // Add child data
@@ -404,13 +326,18 @@ public class DaveningActivity extends BrachosCounterActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                finish();
+                addBrachosToTotalAndFinish();
             }
         });
 
     }
 
+    private void addBrachosToTotalAndFinish(){
+
+        addBrachos(totalBrachosDescriptions,totalBrachosNumbers,getSelectedBrachosDescriptions(),getSelectedBrachosNumbers());
+
+       finish();
+    }
     @Override
     protected void onStop() {
         super.onStop();
@@ -419,11 +346,13 @@ public class DaveningActivity extends BrachosCounterActivity {
 
     @Override
     public void finish() {
+        //TODO make sure can pass back none!
         Intent results = new Intent();
 
-        results.putIntegerArrayListExtra("BRACHOS_NUMBERS", getSelectedBrachosNumbers());
-        results.putStringArrayListExtra("BRACHOS_DESCRIPTIONS", getSelectedBrachosDescriptions());
-        setResult(RESULT_OK, results);
+        results.putIntegerArrayListExtra(sBRACHOS_NUMBERS,totalBrachosNumbers);
+        results.putStringArrayListExtra(sBRACHOS_DESCRIPTION, totalBrachosDescriptions);
+       setResult(RESULT_OK, results);
+     //   saveNonSettingsActivityPreferences(totalBrachosDescriptions,totalBrachosNumbers);
 
         super.finish();
     }

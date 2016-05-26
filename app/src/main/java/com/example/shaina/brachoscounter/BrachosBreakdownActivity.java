@@ -3,9 +3,11 @@ package com.example.shaina.brachoscounter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -80,62 +82,48 @@ public class BrachosBreakdownActivity extends BrachosCounterActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id) {
+    @Override public boolean onOptionsItemSelected (MenuItem item)
+    {
+        int id = item.getItemId ();
+        switch (id)
+        {
             case R.id.action_settings: {
-                //showSettingsActivity ();
+                launchSettings(mBrachosDescription,mBrachosAmount);
                 return true;
             }
             case R.id.action_view_total: {
-                //TODO: viewTotalBrachos();
+               showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(mBrachosAmount));
                 return true;
             }
-            case R.id.about: {
+            case R.id.about:{
                 showAbout();
                 return true;
             }
             case android.R.id.home: {
-                onBackPressed();
+               onBackPressed();
                 return true;
             }
+            case R.id.action_clear:{
+                showSnackbar("Cannot clear in breakdown view.");
+                return true;
+            }
+
         }
-        return super.onOptionsItemSelected(item);
+
+        return super.onOptionsItemSelected (item);
     }
 
-    // This method is called from the onClick property of the menu item "About"
-    @SuppressWarnings({"UnusedParameters", "unused"})
-    public void showAbout(MenuItem item) {
-        showAbout();
+    private void showSnackbar(String snackbarText){
+        final View cl = findViewById (R.id.activity_brachos_breakdown);
+        Snackbar sb = Snackbar.make (cl, snackbarText,
+                Snackbar.LENGTH_LONG);
+        sb.show();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customOnStop(mBrachosDescription,mBrachosAmount);
     }
 
-    private void showAbout() {
-        // Create listener for use with dialog window (could also be created anonymously in setButton...
-        DialogInterface.OnClickListener dialogOnClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Nothing needed to do here
-                    }
-                };
-
-        // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder(BrachosBreakdownActivity.this)
-                .create();
-        alertDialogAbout.setTitle(getString(R.string.aboutDialog_title));
-        ;
-        alertDialogAbout.setMessage(getString(R.string.aboutDialog_banner));
-        alertDialogAbout.setButton(DialogInterface.BUTTON_NEUTRAL,
-                getString(R.string.OK), dialogOnClickListener);
-
-        // Show the dialog window
-        alertDialogAbout.show();
-    }
 
 }

@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,54 +25,39 @@ public class MainActivity extends BrachosCounterActivity
 {
 
 
-    final int MULTI_BRACHOS_REQUEST_CODE = 2;
-    final int MULTI_BRACHOS_MULTIPLE_REQUEST_CODE = 3;
+    final int REQUEST_CODE = 1;
     ArrayList<String> brachosDescriptions;
     ArrayList<Integer> brachosNumbers;
-   // ArrayList<String> brachosDescriptionsToAdd;
-   // ArrayList<Integer> brachosNumbersToAdd;
-
-    Boolean mPrefMale;
-    Boolean mPrefYotzerHameoros;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_main);
+        setupActionBar();
         brachosDescriptions = new ArrayList<> ();
         brachosNumbers = new ArrayList<> ();
-     //   brachosDescriptionsToAdd = new ArrayList<> ();
-       // brachosNumbersToAdd = new ArrayList<> ();
-        //restorePreferencesSavedFromSettingsActivity();
         restoreNonSettingsActivityPreferences ();
         PreferenceManager.setDefaultValues (this, R.xml.pref_general, true);
 
     }
+    private void setupActionBar() {
+        try {
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } catch (NullPointerException nullPointerException) {
 
+        }
+    }
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult (requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case MULTI_BRACHOS_MULTIPLE_REQUEST_CODE:
-                    ArrayList<Integer> numbers = data.getIntegerArrayListExtra ("BRACHOS_NUMBERS");
-                    if (!numbers.isEmpty ()) {
-                        super.addBrachos(brachosDescriptions,brachosNumbers,data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"),numbers);
+        if (resultCode == RESULT_OK&&requestCode==REQUEST_CODE) {
 
-                    }
-                    break;
-                case MULTI_BRACHOS_REQUEST_CODE:
-                    int number = data.getIntExtra ("BRACHOS_NUMBER", 1);
-                    if (number > 0) {
+                    brachosNumbers=data.getIntegerArrayListExtra(sBRACHOS_NUMBERS);
+                    brachosDescriptions=data.getStringArrayListExtra(sBRACHOS_DESCRIPTION);
 
-                        super.addBrachos(brachosDescriptions,brachosNumbers,data.getStringExtra ("BRACHOS_DESCRIPTION"), number);
 
-                    }
-                    break;
-
-            }
         }
     }
 
@@ -81,7 +67,7 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+       startActivityForResult (intent, REQUEST_CODE);
     }
 
     public void launchAddYourOwnPage (View view)
@@ -90,7 +76,7 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult (intent, MULTI_BRACHOS_REQUEST_CODE);
+        startActivityForResult (intent, REQUEST_CODE);
     }
 
     public void launchFoodDrink (View view)
@@ -102,7 +88,7 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+        startActivityForResult (intent, REQUEST_CODE);
     }
 
     public void launchHolidays(View view) {
@@ -113,7 +99,7 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void launchBirchosHanehenin(View view) {
@@ -123,12 +109,12 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void launchMiscellaneous(View view) {
         Intent intent = new Intent(this, BrachosActivity.class);
-        String[] miscBrachos = {"Sheva Brachos Bracha", "Mezuzah", "Ma'akah", "Tevilas Keilim",
+        String[] miscBrachos = {"Sheva Brachos Bracha","Sefiras Haomer", "Mezuzah", "Tevilas Keilim",
                 "Hafrashas Challah", "Maaser", "Oseh Maaseh Beraishis", "Shekocho Ugvuraso",
                 "Seeing a rainbow", "Seeing an ocean", "Meshaneh Habriyos", "Seeing a blooming tree",
                 "Seeing a Torah scholar", "Seeing a secular scholar", "Chacham Harazim", "Dayan Haemes",
@@ -137,24 +123,14 @@ public class MainActivity extends BrachosCounterActivity
 
         intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
         intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
-        startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void launchTotalBreakdown(View view) {
-        Intent intent = new Intent(this, BrachosBreakdownActivity.class);
-        intent.putStringArrayListExtra("description", brachosDescriptions);
-        intent.putIntegerArrayListExtra("amount", brachosNumbers);
-        startActivity(intent);
+
+       launchTotalBreakdown(brachosDescriptions,brachosNumbers);
     }
 
- /*   @Override
-    protected void onStart ()
-    {
-        super.onStart ();
-
-        addBrachosFromRestoredActivity ();
-
-    }*/
 
     //TODO: Do we need an onResume to restore things?
    /* @Override
@@ -305,7 +281,7 @@ public class MainActivity extends BrachosCounterActivity
         {
 
                 case R.id.action_settings: {
-                    startActivity(new Intent(this, SettingsActivity.class));
+                    launchSettings(brachosDescriptions,brachosNumbers);
                     return true;
                 }
 
@@ -361,7 +337,7 @@ public class MainActivity extends BrachosCounterActivity
     {
         showAbout ();
     }
-    private void showAbout ()
+    protected void showAbout ()
     {
 
         // Create listener for use with dialog window (could also be created anonymously in setButton...
