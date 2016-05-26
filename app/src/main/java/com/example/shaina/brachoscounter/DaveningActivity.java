@@ -141,9 +141,9 @@ public class DaveningActivity extends AppCompatActivity {
 
 
         currentKey = getString (R.string.male_option);
-        mPrefMale = defaultSharedPreferences.getBoolean (currentKey, false);
+        mPrefMale = defaultSharedPreferences.getBoolean (currentKey, true);
         currentKey = getString (R.string.yotzer_hameoros_option);
-        mPrefYotzerHameoros=defaultSharedPreferences.getBoolean (currentKey, false);
+        mPrefYotzerHameoros=defaultSharedPreferences.getBoolean (currentKey, true);
 
 
     }

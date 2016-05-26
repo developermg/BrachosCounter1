@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity
     ArrayList<String> brachosDescriptionsToAdd;
     ArrayList<Integer> brachosNumbersToAdd;
 
+    Boolean mPrefMale;
+    Boolean mPrefYotzerHameoros;
+
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
@@ -167,13 +170,16 @@ public class MainActivity extends AppCompatActivity
         // Used for persisting state to storage
 
         // First, get handle to user settings/preferences
-        //   SharedPreferences defaultSharedPreferences =
-        //     PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+          SharedPreferences defaultSharedPreferences =
+             PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //TODO: Set to our preferences!!!
         // Show Background Picture Preference
-       /* currentKey = getString(R.string.showBackgroundKey);
-        mUsePicBackground = defaultSharedPreferences.getBoolean(currentKey, true);*/
+       currentKey = getString(R.string.male_option);
+        mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
+
+        currentKey = getString(R.string.male_option);
+        mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
     }
 
 

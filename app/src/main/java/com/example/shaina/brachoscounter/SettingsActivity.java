@@ -37,6 +37,7 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * Setting activity of Pinyin IME.
@@ -70,6 +71,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("male_option")) {
+
                 Boolean value = sharedPreferences.getBoolean(key, false);
 
 
