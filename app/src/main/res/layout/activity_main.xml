@@ -82,18 +82,18 @@
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/add_your_own"
-                android:onClick="launchAddYourOwnPage"/>
+                android:onClick="launchAddYourOwnPage" />
 
         </TableRow>
 
         <TableRow>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:background="@color/colorPrimaryLight"
-                android:orientation="horizontal">
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
         </TableRow>
 
         <TableRow

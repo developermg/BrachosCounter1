@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-   android:id="@+id/activity_add_your_own"
-    android:orientation="horizontal"
+    android:id="@+id/activity_add_your_own"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
->
+    android:orientation="horizontal">
 
     <ImageButton
+        android:id="@+id/addSymbol"
         android:layout_width="60dp"
         android:layout_height="65dp"
-        android:id="@+id/addSymbol"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="@dimen/button_margin"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/ic_add_black_24dp"
-        android:onClick="addBracha"/>
+        android:layout_marginTop="30dp"
+        android:onClick="addBracha"
+        android:src="@drawable/ic_add_black_24dp" />
 
     <EditText
-        android:layout_marginTop="30dp"
+        android:id="@+id/editText"
         android:layout_width="150dp"
         android:layout_height="65dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/editText"
-        />
+        android:layout_marginTop="30dp" />
+
     <NumberPicker
-        android:layout_marginTop="30dp"
+        android:id="@+id/numberPicker"
         android:layout_width="wrap_content"
         android:layout_height="90dp"
-        android:id="@+id/numberPicker"
         android:layout_marginRight="20dp"
-        android:background="@color/colorBackground"/>
-
+        android:layout_marginTop="30dp"
+        android:background="@color/colorBackground" />
 
 
 </LinearLayout>

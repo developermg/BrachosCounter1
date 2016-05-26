@@ -10,8 +10,7 @@
         android:id="@+id/addSymbol"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="@dimen/button_margin"
-        />
+        android:layout_margin="@dimen/button_margin" />
 
     <TextView
         android:id="@+id/brachaOption"
