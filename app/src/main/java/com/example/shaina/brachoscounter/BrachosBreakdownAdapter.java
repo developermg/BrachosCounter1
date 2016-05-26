@@ -15,18 +15,19 @@ import java.util.ArrayList;
  */
 public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
 
-    private Context mContext;
+    // private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int mRowLayoutResourceId, mRowTextViewResourceId;
 
     public BrachosBreakdownAdapter(Context context, ArrayList<String> brachosDescription,
-                                   ArrayList<String> brachosAmount, int rowResourceId, int rowTextViewResourceId) {
+                                   ArrayList<String> brachosAmount, int rowResourceId,
+                                   int rowTextViewResourceId) {
 
         // superclass will handle the String array portion of this, like getCount(), etc.
         super(context, rowResourceId);
 
         // store a reference to the Context
-        mContext = context;
+        // mContext = context;
 
         // We will need this later to inflate each new row
         mLayoutInflater = LayoutInflater.from(context);
@@ -45,6 +46,9 @@ public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
 
         // regardless of whether or not we have created a new row or converted one from before
         final ViewHolder currentViewHolder = (ViewHolder) currentRow.getTag();
+
+        // set the text of the current TextView to whatever the text is in the ArrayAdapter
+        currentViewHolder.mCurrentTextView.setText(getItem(position));
 
         // set the current row as the View to return when getView is called
         return currentRow;
@@ -74,4 +78,5 @@ public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
     static class ViewHolder {
         TextView mCurrentTextView;
     }
+
 }

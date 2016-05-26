@@ -123,8 +123,12 @@ public class MainActivity extends AppCompatActivity
 
     public void launchTotalBreakdown(View view) {
         Intent intent = new Intent(this, BrachosBreakdownActivity.class);
-        intent.putExtra("description", brachosDescriptions);
-        intent.putExtra("amount", brachosNumbers);
+        //intent.putExtra("description", brachosDescriptions);
+        ArrayList<String> test = new ArrayList<>();
+        test.add("test1");
+        test.add("test2");
+        test.add("test3");
+        //intent.putExtra("amount", brachosNumbers);
         startActivity(intent);
     }
 

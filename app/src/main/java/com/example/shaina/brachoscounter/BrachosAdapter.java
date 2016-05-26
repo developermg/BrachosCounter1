@@ -21,7 +21,7 @@ public class BrachosAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int mRowLayoutResourceId, mRowTextViewResourceId, mRowButtonResourceId;
-    private String[] mAdapterData;
+    // private String[] mAdapterData;
     private ArrayList<String> mClickedItemsList;
 
     public BrachosAdapter(Context context, String[] objects, int rowResourceId,
@@ -47,18 +47,13 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         mClickedItemsList = clickedItemsList;
 
         // Store a reference to the Adapter's data source
-        mAdapterData = objects;
+        //  mAdapterData = objects;
 
         // The list must have been already initialized or else we can't add any items to it later
         if (mClickedItemsList == null) {
             throw new NullPointerException
                     ("The items list must be initialized before being passed in to the Adapter");
         }
-    }
-
-    static class ViewHolder {
-        TextView mCurrentTextView;
-        Button mCurrentButton;
     }
 
     @Override
@@ -90,22 +85,17 @@ public class BrachosAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
                 String actionPerformed;
-
-
-                    actionPerformed = "Added ";
-
-                    // Add the current row's text to the list
-                     mClickedItemsList.add(currentText);
-                    //TODO: Add the numbers
-
+                actionPerformed = "Added ";
+                // Add the current row's text to the list
+                mClickedItemsList.add(currentText);
+                //TODO: Add the numbers
 
                 // Output that the current text was just added or removed
                 Toast.makeText(mContext, actionPerformed + currentText,
                         Toast.LENGTH_SHORT).show();
 
-
                 // change the button text since the item was added to or removed from the ArrayList
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
             }
         });
 
@@ -134,5 +124,9 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         // Return the newly-inflated row that also contains a ViewHolder reference in its tag
         return newRow;
     }
-}
 
+    static class ViewHolder {
+        TextView mCurrentTextView;
+        Button mCurrentButton;
+    }
+}
