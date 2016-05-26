@@ -1,35 +1,20 @@
 package com.example.shaina.brachoscounter;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Shaina on 5/17/2016.
- */
 public class BrachosActivity extends BrachosCounterActivity {
 
+    protected String[] mBrachosArray;
     private ArrayList<Integer> mTotalBrachosNumbers;
     private ArrayList<String> mTotalBrachosDescriptions;
-    protected String[] mBrachosArray;
-    private BrachosAdapter mBrachosAdapter; // The adapter we used for this ListView
-    private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
-    // passed to the adapter which will add selected items to the list
-
-    /*@Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putStringArrayList("CHECKED_ITEMS", mListOfCheckedItems);
-        super.onSaveInstanceState(outState);
-    }*/
+    private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be passed to the adapter which will add selected items to the list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +31,11 @@ public class BrachosActivity extends BrachosCounterActivity {
         super.onBackPressed();
     }
 
-
-
     private void processIncomingData() {
         Intent intent = getIntent();
         mBrachosArray = intent.getStringArrayExtra(getString(R.string.brachosList));
-        mTotalBrachosDescriptions=intent.getStringArrayListExtra(sBRACHOS_DESCRIPTION);
-        mTotalBrachosNumbers=intent.getIntegerArrayListExtra(sBRACHOS_NUMBERS);
+        mTotalBrachosDescriptions = intent.getStringArrayListExtra(sBRACHOS_DESCRIPTION);
+        mTotalBrachosNumbers = intent.getIntegerArrayListExtra(sBRACHOS_NUMBERS);
     }
 
     private void initializeArrays(Bundle savedInstanceState) {
@@ -71,27 +54,20 @@ public class BrachosActivity extends BrachosCounterActivity {
     private void setupListView() {
         ListView list = (ListView) findViewById(R.id.listView);
         assert mListOfCheckedItems != null;
-        mBrachosAdapter = new BrachosAdapter(this, mBrachosArray, R.layout.listview_row,
+        BrachosAdapter mBrachosAdapter = new BrachosAdapter(this, mBrachosArray, R.layout.listview_row,
                 R.id.brachaOption, R.id.addSymbol, mListOfCheckedItems);
         list.setAdapter(mBrachosAdapter);
     }
 
-    /*protected void onListItemClick(ListView l, View v, int position, long id) {
-        String item = (String) getListAdapter().getItem(position);
-        Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
-    }*/
-
-
-    @Override public boolean onOptionsItemSelected (MenuItem item)
-    {
-        int id = item.getItemId ();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id)
-        {
+        switch (id) {
             case R.id.action_settings: {
                 addBrachosToTotal();
-               launchSettings(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+                launchSettings(mTotalBrachosDescriptions, mTotalBrachosNumbers);
                 return true;
             }
             case R.id.action_view_total: {
@@ -99,12 +75,12 @@ public class BrachosActivity extends BrachosCounterActivity {
                 showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(mTotalBrachosNumbers));
                 return true;
             }
-            case R.id.action_view_total_breakdown:{
+            case R.id.action_view_total_breakdown: {
                 addBrachosToTotal();
-                launchTotalBreakdown(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+                launchTotalBreakdown(mTotalBrachosDescriptions, mTotalBrachosNumbers);
                 return true;
             }
-            case R.id.about:{
+            case R.id.about: {
                 showAbout();
                 return true;
             }
@@ -112,62 +88,53 @@ public class BrachosActivity extends BrachosCounterActivity {
                 onBackPressed();
                 return true;
             }
-            case R.id.action_clear:{
-                clearBrachos(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+            case R.id.action_clear: {
+                clearBrachos(mTotalBrachosDescriptions, mTotalBrachosNumbers);
                 showSnackbar("Brachos cleared.");
                 return true;
             }
         }
-        return super.onOptionsItemSelected (item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        customOnStop(mTotalBrachosDescriptions,mTotalBrachosNumbers);
+        customOnStop(mTotalBrachosDescriptions, mTotalBrachosNumbers);
     }
 
-
-    private void showSnackbar(String snackbarText){
-        final View cl = findViewById (R.id.activity_brachos);
-        Snackbar sb = Snackbar.make (cl, snackbarText,
+    private void showSnackbar(String snackbarText) {
+        final View cl = findViewById(R.id.activity_brachos);
+        assert cl != null;
+        Snackbar sb = Snackbar.make(cl, snackbarText,
                 Snackbar.LENGTH_LONG);
         sb.show();
     }
-    private void getSelectedBrachosNumbers(){
-
-    }
-    private void getSelectedBrachosDescriptions() {
-    }
-
 
     @Override
     protected void onPause() {
         super.onPause();
         addBrachosToTotal();
-
     }
 
-    private void addBrachosToTotal(){
-        addBrachos(mTotalBrachosDescriptions,mTotalBrachosNumbers, mListOfCheckedItems, getArrayListOfBrachosNumbers());
+    private void addBrachosToTotal() {
+        addBrachos(mTotalBrachosDescriptions, mTotalBrachosNumbers, mListOfCheckedItems, getArrayListOfBrachosNumbers());
         mListOfCheckedItems.clear();
     }
+
     @Override
     public void finish() {
         addBrachosToTotal();
         Intent results = new Intent();
-        results.putIntegerArrayListExtra(sBRACHOS_NUMBERS,mTotalBrachosNumbers);
-        results.putStringArrayListExtra(sBRACHOS_DESCRIPTION,mTotalBrachosDescriptions);
-     //   results.putStringArrayListExtra("BRACHOS_DESCRIPTIONS", mListOfCheckedItems);
-     //   results.putIntegerArrayListExtra("BRACHOS_NUMBERS", getArrayListOfBrachosNumbers());
+        results.putIntegerArrayListExtra(sBRACHOS_NUMBERS, mTotalBrachosNumbers);
+        results.putStringArrayListExtra(sBRACHOS_DESCRIPTION, mTotalBrachosDescriptions);
         setResult(RESULT_OK, results);
 
         super.finish();
     }
 
-
-    private ArrayList<Integer> getArrayListOfBrachosNumbers(){
-        ArrayList<Integer> numbers=new ArrayList<>();
+    private ArrayList<Integer> getArrayListOfBrachosNumbers() {
+        ArrayList<Integer> numbers = new ArrayList<>();
         for (int i = 0; i < mListOfCheckedItems.size(); i++) {
             numbers.add(1);
         }
