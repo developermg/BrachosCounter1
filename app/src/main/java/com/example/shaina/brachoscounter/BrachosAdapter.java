@@ -13,22 +13,18 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by Shaina on 5/16/2016.
- */
 public class BrachosAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int mRowLayoutResourceId, mRowTextViewResourceId, mRowButtonResourceId;
-    // private String[] mAdapterData;
     private ArrayList<String> mClickedItemsList;
 
     public BrachosAdapter(Context context, String[] objects, int rowResourceId,
                           int rowTextViewResourceId, int rowButtonResourceId,
                           ArrayList<String> clickedItemsList) {
-        // superclass will handle the String array portion of this, like getCount(), etc.
-        super(context, rowResourceId, objects);
+
+        super(context, rowResourceId, objects); // superclass will handle the String array portion of this
 
         // store a reference to the Context
         mContext = context;
@@ -46,14 +42,12 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         // Store a reference to the list passed in from the Activity/Fragment to add to the list
         mClickedItemsList = clickedItemsList;
 
-        // Store a reference to the Adapter's data source
-        //  mAdapterData = objects;
-
         // The list must have been already initialized or else we can't add any items to it later
         if (mClickedItemsList == null) {
             throw new NullPointerException
                     ("The items list must be initialized before being passed in to the Adapter");
         }
+
     }
 
     @Override
@@ -61,7 +55,6 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         // set the current row to either the converted View or, if null, get a new View
         View currentRow = convertView != null ? convertView : getNewView(parent);
 
-        // regardless of whether or not we have created a new row or converted one from before
         final ViewHolder currentViewHolder = (ViewHolder) currentRow.getTag();
 
         // set the text of the current TextView to whatever the text is in the ArrayAdapter
@@ -69,11 +62,6 @@ public class BrachosAdapter extends ArrayAdapter<String> {
 
         // Store a reference to the current text
         final String currentText = currentViewHolder.mCurrentTextView.getText().toString();
-
-        // The following two ternary operator statements might better be changed to one if/else
-        // set the text of the button to reflect if the ArrayList does not/does contain this item
-      /*  currentViewHolder.mCurrentButton.setText(
-                mClickedItemsList.contains(currentText) ? "Remove" : "Add");*/
 
         // set the left drawable of the button to reflect if the ArrayList does not/does contain this item
         currentViewHolder.mCurrentButton.setCompoundDrawablesWithIntrinsicBounds(
@@ -84,23 +72,13 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         currentViewHolder.mCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String actionPerformed;
-                actionPerformed = "Added ";
-                // Add the current row's text to the list
-                mClickedItemsList.add(currentText);
-                //TODO: Add the numbers
-
-                // Output that the current text was just added or removed
-                Toast.makeText(mContext, actionPerformed + currentText,
-                        Toast.LENGTH_SHORT).show();
-
-                // change the button text since the item was added to or removed from the ArrayList
-                //notifyDataSetChanged();
+                String actionPerformed = "Added";
+                mClickedItemsList.add(currentText); // Add the current row's text to the list
+                // Tell the user what was just added
+                Toast.makeText(mContext, actionPerformed + currentText, Toast.LENGTH_SHORT).show();
             }
         });
-
-        // set the current row as the View to return when getView is called
-        return currentRow;
+        return currentRow; // set the current row as the View to return when getView is called
     }
 
     @NonNull
@@ -129,4 +107,5 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         TextView mCurrentTextView;
         Button mCurrentButton;
     }
+
 }
