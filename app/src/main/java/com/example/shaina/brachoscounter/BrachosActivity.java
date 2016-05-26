@@ -127,6 +127,7 @@ public class BrachosActivity extends BrachosCounterActivity {
         customOnStop(mTotalBrachosDescriptions,mTotalBrachosNumbers);
     }
 
+
     private void showSnackbar(String snackbarText){
         final View cl = findViewById (R.id.activity_brachos);
         Snackbar sb = Snackbar.make (cl, snackbarText,
