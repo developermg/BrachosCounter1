@@ -18,7 +18,7 @@
         android:text="@string/main_screen_instructions"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/colorSecondaryDark" />
 
 
     <TableLayout
@@ -35,23 +35,23 @@
 
             <ImageButton
                 android:id="@+id/daveningButton"
-                android:layout_width="20dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:background="@drawable/davening"
                 android:onClick="launchDaveningPage" />
 
             <ImageButton
-                android:layout_width="20dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/food_drink"
                 android:onClick="launchFoodDrink" />
 
             <ImageButton
-                android:layout_width="20dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/holidays"
                 android:onClick="launchHolidays" />
@@ -64,22 +64,22 @@
 
 
             <ImageButton
-                android:layout_width="40dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/birchos_hanehenin"
                 android:onClick="launchBirchosHanehenin" />
 
             <ImageButton
-                android:layout_width="40dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/miscellaneous"
                 android:onClick="launchMiscellaneous" />
 
             <ImageButton
-                android:layout_width="40dip"
-                android:layout_height="100dip"
+                android:layout_width="20dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/add_your_own"
                 android:onClick="launchAddYourOwnPage"/>
@@ -87,16 +87,15 @@
         </TableRow>
 
         <TableRow>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:background="@color/colorPrimaryLight"
                 android:orientation="horizontal">
-
             </LinearLayout>
         </TableRow>
+
         <TableRow
             style="@android:style/ButtonBar"
             android:layout_width="match_parent"
@@ -127,8 +126,6 @@
                 android:onClick="clearBrachos"
                 android:text="@string/clear"
                 android:textColor="@color/colorSecondaryDark" />
-
-
 
         </TableRow>
     </TableLayout>
