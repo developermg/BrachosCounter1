@@ -91,6 +91,8 @@ public class AddYourOwnActivity extends BrachosCounterActivity {
         }
         else if(numberIsGreaterThanZeroAndNoDescription()){
             showSnackbar("Description required.");
+        } else if (numberIsZeroAndNoText()) {
+            showSnackbar("Please enter a bracha.");
         }
         else{
             addBrachos();
@@ -99,6 +101,10 @@ public class AddYourOwnActivity extends BrachosCounterActivity {
 
     }
 
+    private boolean numberIsZeroAndNoText() {
+        return (numberPicker.getValue() == 0 && editText.getText().toString().trim().isEmpty());
+
+    }
     private void addBrachos(){
         addBrachos(mTotalBrachosDescriptions,mTotalBrachosNumbers,editText.getText().toString(),numberPicker.getValue());
     }
