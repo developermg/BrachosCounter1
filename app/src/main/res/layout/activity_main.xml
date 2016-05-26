@@ -107,23 +107,29 @@
             <Button
                 android:id="@+id/totalsButton"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:onClick="viewTotalBrachos"
-                android:text="@string/view_total" />
+                android:text="@string/view_total"
+                android:textColor="@color/colorPrimaryDark" />
 
 
             <Button
                 android:id="@+id/totalBreakdown"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:onClick="launchTotalBreakdown"
-                android:text="@string/view_total_breakdown" />
+                android:text="@string/view_total_breakdown"
+                android:textColor="@color/colorPrimaryDark" />
             <Button
                 android:id="@+id/clearButton"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:onClick="clearBrachos"
-                android:text="@string/clear" />
+                android:text="@string/clear"
+                android:textColor="@color/colorPrimaryDark" />
 
 
 
