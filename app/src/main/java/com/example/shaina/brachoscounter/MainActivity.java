@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         brachosNumbers = new ArrayList<> ();
         brachosDescriptionsToAdd = new ArrayList<> ();
         brachosNumbersToAdd = new ArrayList<> ();
+        PreferenceManager.setDefaultValues (this, R.xml.pref_general, true);
     }
 
 
@@ -310,10 +312,13 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         switch (id)
         {
-            case R.id.action_settings: {
-                //showSettingsActivity ();
-                return true;
-            }
+
+                case R.id.action_settings: {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                    return true;
+                }
+
+
             case R.id.action_view_total: {
                 viewTotalBrachos();
                 return true;
@@ -351,6 +356,7 @@ public class MainActivity extends AppCompatActivity
         }
         return super.onKeyUp (keyCode, event);
     }
+
 
     private void showSnackbar(String snackbarText){
         final View cl = findViewById (R.id.activity_main);

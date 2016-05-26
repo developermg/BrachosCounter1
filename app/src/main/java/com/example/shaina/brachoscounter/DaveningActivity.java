@@ -3,7 +3,9 @@ package com.example.shaina.brachoscounter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -26,12 +28,16 @@ public class DaveningActivity extends AppCompatActivity {
     HashMap<String, List<String>> brachosNames;
     HashMap<String, List<Integer>> brachosNumbers;
 
+    Boolean mPrefMale;
+    Boolean mPrefYotzerHameoros;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_davening);
         setupActionBar();
+        restorePreferencesSavedFromSettingsActivity();
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -66,6 +72,8 @@ public class DaveningActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         // ListView Group collapsed listener
        /* expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
@@ -120,7 +128,25 @@ public class DaveningActivity extends AppCompatActivity {
         });*/
 
     }
+    private void restorePreferencesSavedFromSettingsActivity()
+    {
+        String currentKey;
 
+        // Get handle to custom preferences (not from settings menu)
+        // Used for persisting state to storage
+
+        // First, get handle to user settings/preferences
+        SharedPreferences defaultSharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences (getApplicationContext ());
+
+
+        currentKey = getString (R.string.male_option);
+        mPrefMale = defaultSharedPreferences.getBoolean (currentKey, false);
+        currentKey = getString (R.string.yotzer_hameoros_option);
+        mPrefYotzerHameoros=defaultSharedPreferences.getBoolean (currentKey, false);
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -255,7 +281,13 @@ public class DaveningActivity extends AppCompatActivity {
         brachos.add(getString(R.string.Shemoneh_Esrei));
 
         ArrayList<Integer> numbers = new ArrayList<>();
-        numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_HaShachar));
+        if (mPrefMale){
+            numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_HaShachar_men));
+        }
+        else{
+            numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_HaShachar_women));
+        }
+
         numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_HaTorah));
         numbers.add(getApplicationContext().getResources().getInteger(R.integer.Psukei_DZimra));
         numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_Krias_Shema));
@@ -290,7 +322,13 @@ public class DaveningActivity extends AppCompatActivity {
         brachos.add(getString(R.string.Shemoneh_Esrei));
 
         ArrayList<Integer> numbers = new ArrayList<>();
-        numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_Krias_Shema));
+        if (mPrefYotzerHameoros){
+            numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_Krias_Shema_Maariv_full));
+        }
+        else{
+            numbers.add(getApplicationContext().getResources().getInteger(R.integer.Birchos_Krias_Shema_Maariv));
+        }
+
         numbers.add(getApplicationContext().getResources().getInteger(R.integer.Shemoneh_Esrei));
 
         brachosNames.put(getString(R.string.Maariv), brachos);

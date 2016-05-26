@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="Birchos_HaShachar">17</integer>
+    <integer name="Birchos_HaShachar_women">17</integer>
+    <integer name="Birchos_HaShachar_men">20</integer>
     <integer name="Birchos_HaTorah">3</integer>
     <integer name="Psukei_DZimra">2</integer>
     <integer name="Birchos_Krias_Shema">3</integer>
+    <integer name="Birchos_Krias_Shema_Maariv">4</integer>
+    <integer name="Birchos_Krias_Shema_Maariv_full">5</integer>
     <integer name="Shemoneh_Esrei">19</integer>
     <integer name="Hallel">2</integer>
 </resources>

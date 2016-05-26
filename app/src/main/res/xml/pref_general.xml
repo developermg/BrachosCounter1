@@ -3,15 +3,15 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="example_switch"
+        android:key="@string/male_option"
         android:summary="@string/male_option_description"
-        android:title="@string/male_option" />
+        android:title="@string/male_option_title" />
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="example_switch"
+        android:key="@string/yotzer_hameoros_option"
         android:summary="@string/yotzer_hameoros_description"
-        android:title="@string/yotzer_hameoros_option" />
+        android:title="@string/yotzer_hameoros_title" />
 
 
 </PreferenceScreen>
