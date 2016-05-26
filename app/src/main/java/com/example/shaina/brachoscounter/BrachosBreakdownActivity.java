@@ -1,7 +1,9 @@
 package com.example.shaina.brachoscounter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,14 +15,14 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
 
     protected ArrayList<String> mBrachosDescription, mBrachosAmount;
     private BrachosBreakdownAdapter mBrachosAdapter; // The adapter we used for this ListView
-    private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
+    // private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
     // passed to the adapter which will add selected items to the list
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("CHECKED_ITEMS", mListOfCheckedItems);
         super.onSaveInstanceState(outState);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,12 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
         initializeArrays(savedInstanceState);
         setupListView();
         setupActionBar();
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     private void setupActionBar() {
@@ -75,9 +82,54 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings: {
+                //showSettingsActivity ();
+                return true;
+            }
+            case R.id.action_view_total: {
+                //TODO: viewTotalBrachos();
+                return true;
+            }
+            case R.id.about: {
+                showAbout();
+                return true;
+            }
+            case android.R.id.home: {
+                onBackPressed();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // This method is called from the onClick property of the menu item "About"
+    @SuppressWarnings({"UnusedParameters", "unused"})
+    public void showAbout(MenuItem item) {
+        showAbout();
+    }
+
+    private void showAbout() {
+        // Create listener for use with dialog window (could also be created anonymously in setButton...
+        DialogInterface.OnClickListener dialogOnClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Nothing needed to do here
+                    }
+                };
+
+        // Create dialog window
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(BrachosBreakdownActivity.this)
+                .create();
+        alertDialogAbout.setTitle(getString(R.string.aboutDialog_title));
+        ;
+        alertDialogAbout.setMessage(getString(R.string.aboutDialog_banner));
+        alertDialogAbout.setButton(DialogInterface.BUTTON_NEUTRAL,
+                getString(R.string.OK), dialogOnClickListener);
+
+        // Show the dialog window
+        alertDialogAbout.show();
+    }
+
 }

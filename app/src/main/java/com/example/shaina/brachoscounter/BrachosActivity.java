@@ -8,9 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -19,16 +17,16 @@ import java.util.ArrayList;
 public class BrachosActivity extends AppCompatActivity {
 
 
-    private BrachosAdapter mBrachosAdapter; // The adapter we used for this ListView
     protected String[] mBrachosArray;
+    private BrachosAdapter mBrachosAdapter; // The adapter we used for this ListView
     private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
     // passed to the adapter which will add selected items to the list
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("CHECKED_ITEMS", mListOfCheckedItems);
         super.onSaveInstanceState(outState);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +37,18 @@ public class BrachosActivity extends AppCompatActivity {
         initializeArrays(savedInstanceState);
         setupListView();
         setupActionBar();
-
     }
 
     @Override
     public void onBackPressed() {
         finish();
         super.onBackPressed();
-
     }
 
     private void setupActionBar() {
         try {
             getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException nullPointerException) {
-            //nullPointerException.printStackTrace();
         }
     }
 
@@ -66,7 +61,6 @@ public class BrachosActivity extends AppCompatActivity {
         // initialize the list to be put into the ListView
         mBrachosArray = getIntent().getStringArrayExtra(getString(R.string.brachosList));
 
-
         // initialize the list to be passed into the Adapter
         // to hold the items whose respective buttons are clicked
 
@@ -78,21 +72,16 @@ public class BrachosActivity extends AppCompatActivity {
 
     private void setupListView() {
         ListView list = (ListView) findViewById(R.id.listView);
-
         assert mListOfCheckedItems != null;
         mBrachosAdapter = new BrachosAdapter(this, mBrachosArray, R.layout.listview_row,
-                                             R.id.brachaOption, R.id.addSymbol,
-                                             mListOfCheckedItems);
+                R.id.brachaOption, R.id.addSymbol, mListOfCheckedItems);
         list.setAdapter(mBrachosAdapter);
     }
-
 
     /*protected void onListItemClick(ListView l, View v, int position, long id) {
         String item = (String) getListAdapter().getItem(position);
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
     }*/
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +89,6 @@ public class BrachosActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {
@@ -125,9 +113,7 @@ public class BrachosActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             }
-
         }
-
         return super.onOptionsItemSelected (item);
     }
 
@@ -143,7 +129,6 @@ public class BrachosActivity extends AppCompatActivity {
     }
     private void showAbout ()
     {
-
         // Create listener for use with dialog window (could also be created anonymously in setButton...
         DialogInterface.OnClickListener dialogOnClickListener =
                 new DialogInterface.OnClickListener ()
@@ -156,7 +141,7 @@ public class BrachosActivity extends AppCompatActivity {
                 };
 
         // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (BrachosActivity.this).create ();
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(BrachosActivity.this).create();
         alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
         alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
         alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
@@ -165,9 +150,10 @@ public class BrachosActivity extends AppCompatActivity {
         // Show the dialog window
         alertDialogAbout.show ();
     }
-    private void getSelectedBrachosDescriptions(){
 
+    private void getSelectedBrachosDescriptions() {
     }
+
     @Override
     public void finish() {
         Intent results = new Intent();
@@ -180,10 +166,9 @@ public class BrachosActivity extends AppCompatActivity {
 
     private ArrayList<Integer> getArrayListOfBrachosNumbers(){
         ArrayList<Integer> numbers=new ArrayList<>();
-        for (int i=0; i<mListOfCheckedItems.size(); i++){
+        for (int i = 0; i < mListOfCheckedItems.size(); i++) {
             numbers.add(1);
         }
-
         return numbers;
     }
 
