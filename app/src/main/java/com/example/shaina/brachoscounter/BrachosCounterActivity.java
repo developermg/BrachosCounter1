@@ -143,7 +143,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
 
             brachosNumbers =  brachosArrayList;
-            Toast.makeText(this, "brachosNumbers:"+brachosNumbers, Toast.LENGTH_LONG).show();
+
 
         }
     }
@@ -227,4 +227,6 @@ public class BrachosCounterActivity extends AppCompatActivity {
         // Show the dialog window
         alertDialogAbout.show ();
     }
+
+
 }

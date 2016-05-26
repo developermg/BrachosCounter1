@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 //DEAL WITH OPTIONS
-public class DaveningActivity extends AppCompatActivity {
+public class DaveningActivity extends BrachosCounterActivity {
     DaveningCategoriesAdapter listAdapter;
     ExpandableListView expListView;
     ArrayList<String> daveningCategoryNames;
@@ -195,6 +196,12 @@ public class DaveningActivity extends AppCompatActivity {
         return brachosDescriptions;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {
         int id = item.getItemId ();
@@ -207,7 +214,7 @@ public class DaveningActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.action_view_total: {
-                //TODO: viewTotalBrachos();
+                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
                 return true;
             }
             case R.id.about:{
@@ -218,13 +225,23 @@ public class DaveningActivity extends AppCompatActivity {
                 super.finish();
                 return true;
             }
+            case R.id.action_clear:{
+                clearBrachos();
+                showSnackbar("Brachos cleared.");
+                return true;
+            }
 
         }
 
         return super.onOptionsItemSelected (item);
     }
 
-
+    private void showSnackbar(String snackbarText){
+        final View cl = findViewById (R.id.activity_davening);
+        Snackbar sb = Snackbar.make (cl, snackbarText,
+                Snackbar.LENGTH_LONG);
+        sb.show();
+    }
 
     // This method is called from the onClick property of the menu item "About"
     @SuppressWarnings ( {"UnusedParameters", "unused"})

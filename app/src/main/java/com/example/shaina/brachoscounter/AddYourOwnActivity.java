@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-public class AddYourOwnActivity extends AppCompatActivity {
+public class AddYourOwnActivity extends BrachosCounterActivity {
     private NumberPicker numberPicker;
     private EditText editText;
 

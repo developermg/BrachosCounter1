@@ -94,6 +94,7 @@ public class MainActivity extends BrachosCounterActivity
         String[] foodBrachos = {"Hamotzi", "Mezonos", "Hagafen", "Haetz", "Ha'adama", "Shehakol",
                                 "Birkas Hamazon", "Al Hamichya", "Borei Nefashos"};
         intent.putExtra (getString (R.string.brachosList), foodBrachos);
+       // intent.put
         startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
