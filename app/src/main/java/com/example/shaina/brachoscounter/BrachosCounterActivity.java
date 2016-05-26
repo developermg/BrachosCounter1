@@ -40,13 +40,22 @@ public class BrachosCounterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        restoreNonSettingsActivityPreferences();
-        restorePreferencesSavedFromSettingsActivity();
-        setupActionBar();
         brachosDescriptions=new ArrayList<>();
         brachosNumbers=new ArrayList<>();
+        restoreNonSettingsActivityPreferences();
+        //restorePreferencesSavedFromSettingsActivity();
+        Toast.makeText(this, "brachosNumbers:"+brachosNumbers, Toast.LENGTH_LONG).show();
+        setupActionBar();
+
     }
-    private void restorePreferencesSavedFromSettingsActivity ()
+
+    protected ArrayList<String> getBrachosDescriptions(){
+        return brachosDescriptions;
+    }
+    protected ArrayList<Integer> getBrachosNumbers(){
+        return brachosNumbers;
+    }
+  /*  private void restorePreferencesSavedFromSettingsActivity ()
     {
         String currentKey;
         String currentDefaultValue;
@@ -65,7 +74,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
         currentKey = getString(R.string.male_option);
         mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
-    }
+    }*/
 
     @Override
     protected void onStop ()
@@ -98,6 +107,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
     protected int getTotalBrachos ()
     {
+        Toast.makeText(this, "arrayList:"+brachosNumbers, Toast.LENGTH_LONG).show();
         int counter = 0;
         for (Integer brachosNumber : brachosNumbers) {
             counter += brachosNumber;
@@ -116,7 +126,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
     }
 
     private void restoreNonSettingsActivityPreferences () {
-        Toast.makeText(this, "toasted", Toast.LENGTH_LONG).show();
+
         SharedPreferences settings = getSharedPreferences(sPREFS_FIELDS, MODE_PRIVATE);
         String descriptionString = settings.getString(sBRACHOS_DESCRIPTION, "");
         if (!descriptionString.isEmpty()) {
@@ -124,10 +134,13 @@ public class BrachosCounterActivity extends AppCompatActivity {
             String brachosNumbersString = settings.getString(sBRACHOS_NUMBERS, "[]");
 
 
-            ArrayList brachosArrayList = restoreIntegerListFromJSON(brachosNumbersString);
 
-            brachosNumbers = (ArrayList<Integer>) brachosArrayList;
+            ArrayList<Integer> brachosArrayList = restoreIntegerListFromJSON(brachosNumbersString);
 
+
+
+            brachosNumbers =  brachosArrayList;
+            Toast.makeText(this, "brachosNumbers:"+brachosNumbers, Toast.LENGTH_LONG).show();
 
         }
     }
@@ -140,13 +153,11 @@ public class BrachosCounterActivity extends AppCompatActivity {
         settingsEditor.clear ();
 
         String jsonBrachosDescriptions = getJSON (brachosDescriptions);
-        Toast.makeText(this, "json brachos descriptions:"+jsonBrachosDescriptions, Toast.LENGTH_LONG).show();
         String jsonBrachosNumbers = getJSON (brachosNumbers);
         settingsEditor.putString (sBRACHOS_DESCRIPTION, jsonBrachosDescriptions);
         settingsEditor.putString (sBRACHOS_NUMBERS, jsonBrachosNumbers);
         settingsEditor.apply ();
-        SharedPreferences settings2 = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE);
-        Toast.makeText(this, settings2.getString(sBRACHOS_DESCRIPTION, "uhoh"), Toast.LENGTH_LONG).show();
+
         // Tax and tip are derived from values stored automatically via Settings Activity
         // So we need to store only the other two EditTexts
         //TODO: add our prefs
