@@ -13,16 +13,17 @@ import java.util.ArrayList;
 
 public class BrachosBreakdownActivity extends AppCompatActivity {
 
-    protected ArrayList<String> mBrachosDescription, mBrachosAmount;
+    private ArrayList<String> mBrachosDescription;
+    private ArrayList<Integer> mBrachosAmount;
     private BrachosBreakdownAdapter mBrachosAdapter; // The adapter we used for this ListView
-    // private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
+    private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
     // passed to the adapter which will add selected items to the list
 
-    /*@Override
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("CHECKED_ITEMS", mListOfCheckedItems);
         super.onSaveInstanceState(outState);
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,13 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
     private void processIncomingData() {
         Intent intent = getIntent();
         mBrachosDescription = intent.getStringArrayListExtra("description");
-        mBrachosAmount = intent.getStringArrayListExtra("amount");
+        mBrachosAmount = intent.getIntegerArrayListExtra("amount");
     }
 
     private void initializeArrays(Bundle savedInstanceState) {
         // initialize the list to be put into the ListView
         mBrachosDescription = getIntent().getStringArrayListExtra("description");
-        mBrachosAmount = getIntent().getStringArrayListExtra("amount");
+        mBrachosAmount = getIntent().getIntegerArrayListExtra("amount");
     }
 
     private void setupListView() {

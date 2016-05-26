@@ -2,13 +2,11 @@ package com.example.shaina.brachoscounter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,8 +27,8 @@ public class MainActivity extends BrachosCounterActivity
     private final static String sBRACHOS_NUMBERS = "BRACHOS_NUMBERS";
     final int MULTI_BRACHOS_REQUEST_CODE = 2;
     final int MULTI_BRACHOS_MULTIPLE_REQUEST_CODE = 3;
-    ArrayList<String> brachosDescriptions;
-    ArrayList<Integer> brachosNumbers;
+    //ArrayList<String> brachosDescriptions;
+    //ArrayList<Integer> brachosNumbers;
     ArrayList<String> brachosDescriptionsToAdd;
     ArrayList<Integer> brachosNumbersToAdd;
 
@@ -42,8 +40,8 @@ public class MainActivity extends BrachosCounterActivity
     {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_main);
-        brachosDescriptions = new ArrayList<> ();
-        brachosNumbers = new ArrayList<> ();
+        //brachosDescriptions = new ArrayList<> ();
+        //brachosNumbers = new ArrayList<> ();
      //   brachosDescriptionsToAdd = new ArrayList<> ();
        // brachosNumbersToAdd = new ArrayList<> ();
         // restorePreferencesSavedFromSettingsActivity();
@@ -51,7 +49,6 @@ public class MainActivity extends BrachosCounterActivity
         PreferenceManager.setDefaultValues (this, R.xml.pref_general, true);
 
     }
-
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
@@ -128,12 +125,8 @@ public class MainActivity extends BrachosCounterActivity
 
     public void launchTotalBreakdown(View view) {
         Intent intent = new Intent(this, BrachosBreakdownActivity.class);
-        //intent.putExtra("description", brachosDescriptions);
-        ArrayList<String> test = new ArrayList<>();
-        test.add("test1");
-        test.add("test2");
-        test.add("test3");
-        //intent.putExtra("amount", brachosNumbers);
+        intent.putStringArrayListExtra("description", brachosDescriptions);
+        intent.putIntegerArrayListExtra("amount", brachosNumbers);
         startActivity(intent);
     }
 
