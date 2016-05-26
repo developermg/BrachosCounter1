@@ -2,6 +2,7 @@ package com.example.shaina.brachoscounter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,15 +23,13 @@ import java.util.ArrayList;
 public class MainActivity extends BrachosCounterActivity
 {
 
-    private final static String sPREFS_FIELDS = "PREFS_FIELDS";
-    private final static String sBRACHOS_DESCRIPTION = "BRACHOS_DESCRIPTIONS";
-    private final static String sBRACHOS_NUMBERS = "BRACHOS_NUMBERS";
+
     final int MULTI_BRACHOS_REQUEST_CODE = 2;
     final int MULTI_BRACHOS_MULTIPLE_REQUEST_CODE = 3;
-    //ArrayList<String> brachosDescriptions;
-    //ArrayList<Integer> brachosNumbers;
-    ArrayList<String> brachosDescriptionsToAdd;
-    ArrayList<Integer> brachosNumbersToAdd;
+    ArrayList<String> brachosDescriptions;
+    ArrayList<Integer> brachosNumbers;
+   // ArrayList<String> brachosDescriptionsToAdd;
+   // ArrayList<Integer> brachosNumbersToAdd;
 
     Boolean mPrefMale;
     Boolean mPrefYotzerHameoros;
@@ -40,12 +39,12 @@ public class MainActivity extends BrachosCounterActivity
     {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_main);
-        //brachosDescriptions = new ArrayList<> ();
-        //brachosNumbers = new ArrayList<> ();
+        brachosDescriptions = new ArrayList<> ();
+        brachosNumbers = new ArrayList<> ();
      //   brachosDescriptionsToAdd = new ArrayList<> ();
        // brachosNumbersToAdd = new ArrayList<> ();
-        // restorePreferencesSavedFromSettingsActivity();
-        //restoreNonSettingsActivityPreferences ();
+        //restorePreferencesSavedFromSettingsActivity();
+        restoreNonSettingsActivityPreferences ();
         PreferenceManager.setDefaultValues (this, R.xml.pref_general, true);
 
     }
@@ -59,7 +58,7 @@ public class MainActivity extends BrachosCounterActivity
                 case MULTI_BRACHOS_MULTIPLE_REQUEST_CODE:
                     ArrayList<Integer> numbers = data.getIntegerArrayListExtra ("BRACHOS_NUMBERS");
                     if (!numbers.isEmpty ()) {
-                        super.addBrachos(data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"),numbers);
+                        super.addBrachos(brachosDescriptions,brachosNumbers,data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"),numbers);
 
                     }
                     break;
@@ -67,7 +66,7 @@ public class MainActivity extends BrachosCounterActivity
                     int number = data.getIntExtra ("BRACHOS_NUMBER", 1);
                     if (number > 0) {
 
-                        super.addBrachos(data.getStringExtra ("BRACHOS_DESCRIPTION"), number);
+                        super.addBrachos(brachosDescriptions,brachosNumbers,data.getStringExtra ("BRACHOS_DESCRIPTION"), number);
 
                     }
                     break;
@@ -79,12 +78,18 @@ public class MainActivity extends BrachosCounterActivity
     public void launchDaveningPage (View view)
     {
         Intent intent = new Intent (this, DaveningActivity.class);
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
     public void launchAddYourOwnPage (View view)
     {
         Intent intent = new Intent (this, AddYourOwnActivity.class);
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult (intent, MULTI_BRACHOS_REQUEST_CODE);
     }
 
@@ -94,7 +99,9 @@ public class MainActivity extends BrachosCounterActivity
         String[] foodBrachos = {"Hamotzi", "Mezonos", "Hagafen", "Haetz", "Ha'adama", "Shehakol",
                                 "Birkas Hamazon", "Al Hamichya", "Borei Nefashos"};
         intent.putExtra (getString (R.string.brachosList), foodBrachos);
-       // intent.put
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult (intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
@@ -103,6 +110,9 @@ public class MainActivity extends BrachosCounterActivity
         String[] holidayBrachos = {"L'hadlik Ner Chanuka", "She'asa Nisim", "Shehechiyanu", "Lulav and Esrog",
                 "Leisheiv BaSukkah", "Mikra Megillah"};
         intent.putExtra(getString(R.string.brachosList), holidayBrachos);
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
@@ -110,6 +120,9 @@ public class MainActivity extends BrachosCounterActivity
         Intent intent = new Intent(this, BrachosActivity.class);
         String[] haneheninBrachos = {"Minei Besamim", "Atzei Besamim", "Isvei Besamim", "Reiach tov l'peiros"};
         intent.putExtra(getString(R.string.brachosList), haneheninBrachos);
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
@@ -121,13 +134,16 @@ public class MainActivity extends BrachosCounterActivity
                 "Seeing a Torah scholar", "Seeing a secular scholar", "Chacham Harazim", "Dayan Haemes",
                 "HaTov V'hameitiv", "Sha'asa li nes", "Shehechiyanu", "Asher Yatzar", "Tefillas Haderech"};
         intent.putExtra(getString(R.string.brachosList), miscBrachos);
+
+        intent.putIntegerArrayListExtra(sBRACHOS_NUMBERS,brachosNumbers);
+        intent.putStringArrayListExtra(sBRACHOS_DESCRIPTION,brachosDescriptions);
         startActivityForResult(intent, MULTI_BRACHOS_MULTIPLE_REQUEST_CODE);
     }
 
     public void launchTotalBreakdown(View view) {
         Intent intent = new Intent(this, BrachosBreakdownActivity.class);
-        intent.putStringArrayListExtra("description", getBrachosDescriptions());
-        intent.putIntegerArrayListExtra("amount", getBrachosNumbers());
+        intent.putStringArrayListExtra("description", brachosDescriptions);
+        intent.putIntegerArrayListExtra("amount", brachosNumbers);
         startActivity(intent);
     }
 
@@ -147,13 +163,29 @@ public class MainActivity extends BrachosCounterActivity
         super.onResume ();
     }*/
 
-   /* @Override
+    @Override
     protected void onStop ()
     {
         super.onStop ();
-        saveNonSettingsActivityPreferences ();
-    }*/
+        customOnStop (brachosDescriptions,brachosNumbers);
+    }
+    private void restoreNonSettingsActivityPreferences () {
 
+        SharedPreferences settings = getSharedPreferences(sPREFS_FIELDS, MODE_PRIVATE);
+        String descriptionString = settings.getString(sBRACHOS_DESCRIPTION, "");
+        if (!descriptionString.isEmpty()) {
+            brachosDescriptions = restoreStringListFromJSON(descriptionString);
+            String brachosNumbersString = settings.getString(sBRACHOS_NUMBERS, "[]");
+
+
+            ArrayList<Integer> brachosArrayList = restoreIntegerListFromJSON(brachosNumbersString);
+
+
+            brachosNumbers = brachosArrayList;
+
+
+        }
+    }
    /*private void restorePreferencesSavedFromSettingsActivity ()
     {
         String currentKey;
@@ -220,30 +252,6 @@ public class MainActivity extends BrachosCounterActivity
      //   settingsEditor.apply ();
   //  }
 
-    private String getJSON (ArrayList obj)
-    {
-        Gson gson = new Gson ();
-        String json = gson.toJson (obj);
-
-
-        return json;
-    }
-
-    private ArrayList<Integer> restoreIntegerListFromJSON (String json)
-    {
-
-        Gson gson = new Gson ();
-        // This is how you tell gson about the generic type you want to get back:
-        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
-        ArrayList<Integer> obj = gson.fromJson (json,type);
-        return obj;
-    }
-    private ArrayList<String> restoreStringListFromJSON (String json)
-    {
-        Gson gson = new Gson ();
-        ArrayList<String> obj = gson.fromJson (json, ArrayList.class);
-        return obj;
-    }
 
 
   /*  private void addBrachosFromRestoredActivity ()
@@ -264,12 +272,12 @@ public class MainActivity extends BrachosCounterActivity
 
     public void viewTotalBrachos ()
     {
-        showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
+        showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(brachosNumbers));
     }
 
     public void clearBrachos (View view)
     {
-        super.clearBrachos();
+        super.clearBrachos(brachosDescriptions,brachosNumbers);
         showSnackbar("Brachos cleared.");
     }
 

@@ -27,12 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrachosCounterActivity extends AppCompatActivity {
-    ArrayList<String> brachosDescriptions;
-    ArrayList<Integer> brachosNumbers;
 
-    private final static String sPREFS_FIELDS = "PREFS_FIELDS";
-    private final static String sBRACHOS_DESCRIPTION = "BRACHOS_DESCRIPTIONS";
-    private final static String sBRACHOS_NUMBERS = "BRACHOS_NUMBERS";
+
+    protected final static String sPREFS_FIELDS = "PREFS_FIELDS";
+    protected final static String sBRACHOS_DESCRIPTION = "BRACHOS_DESCRIPTIONS";
+    protected final static String sBRACHOS_NUMBERS = "BRACHOS_NUMBERS";
 
     Boolean mPrefMale;
     Boolean mPrefYotzerHameoros;
@@ -40,21 +39,11 @@ public class BrachosCounterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        brachosDescriptions=new ArrayList<>();
-        brachosNumbers=new ArrayList<>();
-        restoreNonSettingsActivityPreferences();
-        //restorePreferencesSavedFromSettingsActivity();
-        Toast.makeText(this, "brachosNumbers:"+brachosNumbers, Toast.LENGTH_LONG).show();
+      //  restoreNonSettingsActivityPreferences();
         setupActionBar();
 
     }
 
-    protected ArrayList<String> getBrachosDescriptions(){
-        return brachosDescriptions;
-    }
-    protected ArrayList<Integer> getBrachosNumbers(){
-        return brachosNumbers;
-    }
   /*  private void restorePreferencesSavedFromSettingsActivity ()
     {
         String currentKey;
@@ -76,11 +65,11 @@ public class BrachosCounterActivity extends AppCompatActivity {
         mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
     }*/
 
-    @Override
-    protected void onStop ()
-    {
+
+
+    protected void customOnStop(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers){
+        saveNonSettingsActivityPreferences (brachosDescriptions, brachosNumbers);
         super.onStop ();
-        saveNonSettingsActivityPreferences ();
     }
 
 
@@ -95,17 +84,17 @@ public class BrachosCounterActivity extends AppCompatActivity {
         }
     }
 
-    protected void addBrachos(String description, int number){
+    protected void addBrachos(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers, String description, int number){
         brachosDescriptions.add(description);
         brachosNumbers.add(number);
     }
 
-    protected void addBrachos(List<String> descriptions, List<Integer> numbers){
+    protected void addBrachos(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers, List<String> descriptions, List<Integer> numbers){
         brachosDescriptions.addAll(descriptions);
         brachosNumbers.addAll(numbers);
     }
 
-    protected int getTotalBrachos ()
+    protected int getTotalBrachos (ArrayList<Integer> brachosNumbers)
     {
         Toast.makeText(this, "arrayList:"+brachosNumbers, Toast.LENGTH_LONG).show();
         int counter = 0;
@@ -116,19 +105,19 @@ public class BrachosCounterActivity extends AppCompatActivity {
         return counter;
 
     }
-    protected void clearBrachos (View view)
+   /* protected void clearBrachos (View view)
     {
         //call addBrachosFromRestoredActivity to flush the 'ToAdd' ArrayLists if click before they are flushed
         //addBrachosFromRestoredActivity ();
         clearBrachos();
 
-    }
-    public void clearBrachos(){
+    }*/
+    public void clearBrachos(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers){
         brachosDescriptions.clear ();
         brachosNumbers.clear ();
     }
 
-    private void restoreNonSettingsActivityPreferences () {
+   /* private void restoreNonSettingsActivityPreferences () {
 
         SharedPreferences settings = getSharedPreferences(sPREFS_FIELDS, MODE_PRIVATE);
         String descriptionString = settings.getString(sBRACHOS_DESCRIPTION, "");
@@ -146,8 +135,8 @@ public class BrachosCounterActivity extends AppCompatActivity {
 
 
         }
-    }
-    private void saveNonSettingsActivityPreferences ()
+    }*/
+    private void saveNonSettingsActivityPreferences (ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers)
     {
 
         SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE); //MP==0
@@ -161,14 +150,6 @@ public class BrachosCounterActivity extends AppCompatActivity {
         settingsEditor.putString (sBRACHOS_NUMBERS, jsonBrachosNumbers);
         settingsEditor.apply ();
 
-        // Tax and tip are derived from values stored automatically via Settings Activity
-        // So we need to store only the other two EditTexts
-        //TODO: add our prefs
-     /*
-        */
-        // settingsEditor.putString (mSUBTOTAL_PREF_KEY, mSubTotalField.getText ().toString ());
-        //settingsEditor.putString (mPAYERS_PREF_KEY, mPayersField.getText ().toString ());
-
 
     }
 
@@ -181,7 +162,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
         return json;
     }
 
-    private ArrayList<Integer> restoreIntegerListFromJSON (String json)
+    protected ArrayList<Integer> restoreIntegerListFromJSON (String json)
     {
 
         Gson gson = new Gson ();
@@ -190,7 +171,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
         ArrayList<Integer> obj = gson.fromJson (json,type);
         return obj;
     }
-    private ArrayList<String> restoreStringListFromJSON (String json)
+    protected ArrayList<String> restoreStringListFromJSON (String json)
     {
         Gson gson = new Gson ();
         ArrayList<String> obj = gson.fromJson (json, ArrayList.class);
@@ -218,7 +199,7 @@ public class BrachosCounterActivity extends AppCompatActivity {
                 };
 
         // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (this).create ();
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(getApplicationContext()).create ();
         alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));
         alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
         alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,

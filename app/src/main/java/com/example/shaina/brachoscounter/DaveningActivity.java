@@ -29,6 +29,8 @@ public class DaveningActivity extends BrachosCounterActivity {
     HashMap<String, List<String>> brachosNames;
     HashMap<String, List<Integer>> brachosNumbers;
 
+    ArrayList<Integer> totalBrachosNumbers;
+    ArrayList<String> totalBrachosDescriptions;
     Boolean mPrefMale;
     Boolean mPrefYotzerHameoros;
 
@@ -38,6 +40,7 @@ public class DaveningActivity extends BrachosCounterActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_davening);
         setupActionBar();
+        processIncomingData();
         restorePreferencesSavedFromSettingsActivity();
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -129,6 +132,12 @@ public class DaveningActivity extends BrachosCounterActivity {
         });*/
 
     }
+
+    private void processIncomingData(){
+        Intent intent = getIntent();
+        totalBrachosDescriptions = intent.getStringArrayListExtra(sBRACHOS_DESCRIPTION);
+        totalBrachosNumbers = intent.getIntegerArrayListExtra(sBRACHOS_NUMBERS);
+    }
     private void restorePreferencesSavedFromSettingsActivity()
     {
         String currentKey;
@@ -214,7 +223,7 @@ public class DaveningActivity extends BrachosCounterActivity {
                 return true;
             }
             case R.id.action_view_total: {
-                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
+                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(totalBrachosNumbers));
                 return true;
             }
             case R.id.about:{
@@ -226,7 +235,8 @@ public class DaveningActivity extends BrachosCounterActivity {
                 return true;
             }
             case R.id.action_clear:{
-                clearBrachos();
+                clearBrachos(totalBrachosDescriptions,totalBrachosNumbers);
+                Toast.makeText(this, totalBrachosDescriptions.toString(), Toast.LENGTH_LONG).show();
                 showSnackbar("Brachos cleared.");
                 return true;
             }
@@ -265,7 +275,7 @@ public class DaveningActivity extends BrachosCounterActivity {
 
         // Create dialog window
         AlertDialog alertDialogAbout = new AlertDialog.Builder (DaveningActivity.this).create ();
-        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
+        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));
         alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
         alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
                 getString (R.string.OK), dialogOnClickListener);
@@ -399,6 +409,12 @@ public class DaveningActivity extends BrachosCounterActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customOnStop(totalBrachosDescriptions,totalBrachosNumbers);
     }
 
     @Override

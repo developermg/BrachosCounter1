@@ -62,8 +62,8 @@ public class BrachosBreakdownActivity extends BrachosCounterActivity {
 
     private void setupListView() {
         ListView list = (ListView) findViewById(R.id.listView);
-        ArrayList<String> descriptions = getBrachosDescriptions();
-        ArrayList<Integer> numbers = getBrachosNumbers();
+        ArrayList<String> descriptions = mBrachosDescription;
+        ArrayList<Integer> numbers = mBrachosAmount;
         String[] descriptionsAndNumbers = new String[descriptions.size()];
         for (int i = 0; i < descriptions.size(); i++) {
             descriptionsAndNumbers[i] = descriptions.get(i) + "  " + numbers.get(i);
