@@ -72,7 +72,7 @@ public class BrachosActivity extends AppCompatActivity {
 
     private void setupListView() {
         ListView list = (ListView) findViewById(R.id.listView);
-        //assert mListOfCheckedItems != null;
+        assert mListOfCheckedItems != null;
         mBrachosAdapter = new BrachosAdapter(this, mBrachosArray, R.layout.listview_row,
                 R.id.brachaOption, R.id.addSymbol, mListOfCheckedItems);
         list.setAdapter(mBrachosAdapter);
@@ -113,9 +113,7 @@ public class BrachosActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             }
-
         }
-
         return super.onOptionsItemSelected (item);
     }
 
@@ -131,7 +129,6 @@ public class BrachosActivity extends AppCompatActivity {
     }
     private void showAbout ()
     {
-
         // Create listener for use with dialog window (could also be created anonymously in setButton...
         DialogInterface.OnClickListener dialogOnClickListener =
                 new DialogInterface.OnClickListener ()
@@ -144,7 +141,7 @@ public class BrachosActivity extends AppCompatActivity {
                 };
 
         // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (BrachosActivity.this).create ();
+        AlertDialog alertDialogAbout = new AlertDialog.Builder(BrachosActivity.this).create();
         alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
         alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
         alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
