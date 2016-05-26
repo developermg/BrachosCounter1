@@ -72,7 +72,7 @@ public class BrachosAdapter extends ArrayAdapter<String> {
         currentViewHolder.mCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String actionPerformed = "Added";
+                String actionPerformed = "Added ";
                 mClickedItemsList.add(currentText); // Add the current row's text to the list
                 // Tell the user what was just added
                 Toast.makeText(mContext, actionPerformed + currentText, Toast.LENGTH_SHORT).show();

@@ -8,32 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-/**
- * Created by Shaina on 5/25/2016.
- */
 public class BrachosBreakdownAdapter extends ArrayAdapter<String> {
 
-    private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int mRowLayoutResourceId, mRowTextViewResourceId;
-    private ArrayList<String> mBrachosDescription;
-    private ArrayList<Integer> mBrachosAmount;
 
     public BrachosBreakdownAdapter(Context context, String[] objs, int rowResourceId,
                                    int rowTextViewResourceId) {
-        //public BrachosBreakdownAdapter(Context context, int rowResourceId, int rowTextViewResourceId) {
 
         // superclass will handle the String array portion of this, like getCount(), etc.
         super(context, rowResourceId, objs);
-
-        // store a reference to the Context
-        mContext = context;
-
-        //store a reference to arraylists
-      /*  mBrachosDescription = brachosDescription;
-        mBrachosAmount = brachosAmount;*/
 
         // We will need this later to inflate each new row
         mLayoutInflater = LayoutInflater.from(context);

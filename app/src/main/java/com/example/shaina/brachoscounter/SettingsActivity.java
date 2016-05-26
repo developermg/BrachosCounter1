@@ -1,8 +1,20 @@
 package com.example.shaina.brachoscounter;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.Preference;
+import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
 /*
  * Copyright (C) 2009 The Android Open Source Project
  *
@@ -18,43 +30,17 @@ import android.preference.Preference;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.util.ArrayList;
-import java.util.List;
-
-import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.preference.SwitchPreference;
-import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 /**
  * Setting activity of Pinyin IME.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity  {
+public class SettingsActivity extends AppCompatPreferenceActivity {
     private ArrayList<Integer> mTotalBrachosNumbers;
     private ArrayList<String> mTotalBrachosDescriptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_user_settings);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -64,43 +50,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
         processIncomingData();
-    }
-
-
-
-    public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.pref_general);
-        }
-
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals("male_option")) {
-
-                Boolean value = sharedPreferences.getBoolean(key, false);
-
-
-            }
-        }
-        @Override
-        public void onResume() {
-            super.onResume();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .unregisterOnSharedPreferenceChangeListener(this);
-        }
     }
 
     @Override
@@ -115,10 +64,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     }
 
     protected void saveNonSettingsActivityPreferences(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers) {
-
         SharedPreferences settings = getSharedPreferences(BrachosCounterActivity.sPREFS_FIELDS, MODE_PRIVATE); //MP==0
         SharedPreferences.Editor settingsEditor = settings.edit();
-
         settingsEditor.clear();
 
         String jsonBrachosDescriptions = getJSON(brachosDescriptions);
@@ -126,23 +73,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         settingsEditor.putString(BrachosCounterActivity.sBRACHOS_DESCRIPTION, jsonBrachosDescriptions);
         settingsEditor.putString(BrachosCounterActivity.sBRACHOS_NUMBERS, jsonBrachosNumbers);
         settingsEditor.apply();
-
-
     }
 
     private String getJSON(ArrayList obj) {
         Gson gson = new Gson();
-        String json = gson.toJson(obj);
-
-
-        return json;
+        return gson.toJson(obj);
     }
 
     private void processIncomingData() {
         Intent intent = getIntent();
         mTotalBrachosDescriptions = intent.getStringArrayListExtra(BrachosCounterActivity.sBRACHOS_DESCRIPTION);
         mTotalBrachosNumbers = intent.getIntegerArrayListExtra(BrachosCounterActivity.sBRACHOS_NUMBERS);
-
     }
 
     @Override
@@ -155,8 +96,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
 
+        switch (id) {
             case R.id.action_view_total: {
                 showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
                 return true;
@@ -177,9 +118,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 showSnackbar("Cannot clear in settings menu.");
                 return true;
             }
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -213,7 +152,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     }
 
     private void showAbout() {
-
         // Create listener for use with dialog window (could also be created anonymously in setButton...
         DialogInterface.OnClickListener dialogOnClickListener =
                 new DialogInterface.OnClickListener() {
@@ -226,7 +164,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         // Create dialog window
         AlertDialog alertDialogAbout = new AlertDialog.Builder(SettingsActivity.this).create();
         alertDialogAbout.setTitle(getString(R.string.aboutDialog_title));
-        ;
         alertDialogAbout.setMessage(getString(R.string.aboutDialog_banner));
         alertDialogAbout.setButton(DialogInterface.BUTTON_NEUTRAL,
                 getString(R.string.OK), dialogOnClickListener);
@@ -234,4 +171,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         // Show the dialog window
         alertDialogAbout.show();
     }
+
+    public static class SettingsFragment extends PreferenceFragment
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_general);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals("male_option")) {
+                Boolean value = sharedPreferences.getBoolean(key, false);
+            }
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        }
+    }
+
 }
