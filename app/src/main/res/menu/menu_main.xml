@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <menu xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.example.shaina.brachoscounter">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.shaina.brachoscounter">
     <item
         android:id="@+id/action_view_total"
         android:title="@string/view_total"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/action_view_total_breakdown"
         android:title="@string/view_total_breakdown"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_clear"
         android:title="@string/clear"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/about"
         android:title="@string/about"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 
 </menu>
