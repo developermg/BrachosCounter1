@@ -13,14 +13,14 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
 
     protected ArrayList<String> mBrachosDescription, mBrachosAmount;
     private BrachosBreakdownAdapter mBrachosAdapter; // The adapter we used for this ListView
-    private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
+    // private ArrayList<String> mListOfCheckedItems; // ArrayList of items to be
     // passed to the adapter which will add selected items to the list
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("CHECKED_ITEMS", mListOfCheckedItems);
         super.onSaveInstanceState(outState);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,12 @@ public class BrachosBreakdownActivity extends AppCompatActivity {
         initializeArrays(savedInstanceState);
         setupListView();
         setupActionBar();
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     private void setupActionBar() {
