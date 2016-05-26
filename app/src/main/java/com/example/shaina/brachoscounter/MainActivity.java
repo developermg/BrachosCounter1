@@ -132,12 +132,7 @@ public class MainActivity extends BrachosCounterActivity
     }
 
 
-    //TODO: Do we need an onResume to restore things?
-   /* @Override
-    protected void onResume ()
-    {
-        super.onResume ();
-    }*/
+
 
     @Override
     protected void onStop ()
@@ -266,32 +261,36 @@ public class MainActivity extends BrachosCounterActivity
         set(key, json);
     }*/
 
-    @Override public boolean onCreateOptionsMenu (Menu menu)
-    {
-        getMenuInflater ().inflate (R.menu.menu_main, menu);
-        return true; //super.onCreateOptionsMenu (menu);
-    }
+
 
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {
         int id = item.getItemId ();
-
-        //noinspection SimplifiableIfStatement
         switch (id)
         {
-
-                case R.id.action_settings: {
-                    launchSettings(brachosDescriptions,brachosNumbers);
-                    return true;
-                }
-
-
+            case R.id.action_settings: {
+                launchSettings(brachosDescriptions, brachosNumbers);
+                return true;
+            }
             case R.id.action_view_total: {
-                viewTotalBrachos();
+                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos(brachosNumbers));
+                return true;
+            }
+            case R.id.action_view_total_breakdown: {
+                launchTotalBreakdown(brachosDescriptions, brachosNumbers);
                 return true;
             }
             case R.id.about:{
                 showAbout();
+                return true;
+            }
+            case android.R.id.home: {
+                super.finish();
+                return true;
+            }
+            case R.id.action_clear: {
+                clearBrachos(brachosDescriptions, brachosNumbers);
+                showSnackbar("Brachos cleared.");
                 return true;
             }
 
@@ -331,35 +330,6 @@ public class MainActivity extends BrachosCounterActivity
                 Snackbar.LENGTH_LONG);
         sb.show();
     }
-    // This method is called from the onClick property of the menu item "About"
-    @SuppressWarnings ( {"UnusedParameters", "unused"})
-    public void showAbout (MenuItem item)
-    {
-        showAbout ();
-    }
-    protected void showAbout ()
-    {
 
-        // Create listener for use with dialog window (could also be created anonymously in setButton...
-        DialogInterface.OnClickListener dialogOnClickListener =
-                new DialogInterface.OnClickListener ()
-                {
-                    @Override
-                    public void onClick (DialogInterface dialog, int which)
-                    {
-                        // Nothing needed to do here
-                    }
-                };
-
-        // Create dialog window
-        AlertDialog alertDialogAbout = new AlertDialog.Builder (MainActivity.this).create ();
-        alertDialogAbout.setTitle (getString (R.string.aboutDialog_title));;
-        alertDialogAbout.setMessage (getString (R.string.aboutDialog_banner));
-        alertDialogAbout.setButton (DialogInterface.BUTTON_NEUTRAL,
-                getString (R.string.OK), dialogOnClickListener);
-
-        // Show the dialog window
-        alertDialogAbout.show ();
-    }
 }
 

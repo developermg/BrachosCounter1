@@ -34,7 +34,6 @@ public class BrachosBreakdownActivity extends BrachosCounterActivity {
         //processSavedState(savedInstanceState);
         initializeArrays(savedInstanceState);
         setupListView();
-        setupActionBar();
     }
 
     @Override
@@ -43,12 +42,6 @@ public class BrachosBreakdownActivity extends BrachosCounterActivity {
         super.onBackPressed();
     }
 
-    private void setupActionBar() {
-        try {
-            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException nullPointerException) {
-        }
-    }
 
     private void processIncomingData() {
         Intent intent = getIntent();
@@ -75,12 +68,6 @@ public class BrachosBreakdownActivity extends BrachosCounterActivity {
         list.setAdapter(mBrachosAdapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override public boolean onOptionsItemSelected (MenuItem item)
     {

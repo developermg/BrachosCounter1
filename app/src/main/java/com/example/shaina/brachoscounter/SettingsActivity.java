@@ -18,6 +18,7 @@ import android.preference.Preference;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -34,15 +35,22 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 /**
  * Setting activity of Pinyin IME.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity  {
+    private ArrayList<Integer> mTotalBrachosNumbers;
+    private ArrayList<String> mTotalBrachosDescriptions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
+        processIncomingData();
     }
 
 
@@ -94,6 +103,47 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customOnStop(mTotalBrachosDescriptions, mTotalBrachosNumbers);
+    }
+
+    protected void customOnStop(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers) {
+        saveNonSettingsActivityPreferences(brachosDescriptions, brachosNumbers);
+        super.onStop();
+    }
+
+    protected void saveNonSettingsActivityPreferences(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers) {
+
+        SharedPreferences settings = getSharedPreferences(BrachosCounterActivity.sPREFS_FIELDS, MODE_PRIVATE); //MP==0
+        SharedPreferences.Editor settingsEditor = settings.edit();
+
+        settingsEditor.clear();
+
+        String jsonBrachosDescriptions = getJSON(brachosDescriptions);
+        String jsonBrachosNumbers = getJSON(brachosNumbers);
+        settingsEditor.putString(BrachosCounterActivity.sBRACHOS_DESCRIPTION, jsonBrachosDescriptions);
+        settingsEditor.putString(BrachosCounterActivity.sBRACHOS_NUMBERS, jsonBrachosNumbers);
+        settingsEditor.apply();
+
+
+    }
+
+    private String getJSON(ArrayList obj) {
+        Gson gson = new Gson();
+        String json = gson.toJson(obj);
+
+
+        return json;
+    }
+
+    private void processIncomingData() {
+        Intent intent = getIntent();
+        mTotalBrachosDescriptions = intent.getStringArrayListExtra(BrachosCounterActivity.sBRACHOS_DESCRIPTION);
+        mTotalBrachosNumbers = intent.getIntegerArrayListExtra(BrachosCounterActivity.sBRACHOS_NUMBERS);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,11 +155,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         switch (id) {
+
             case R.id.action_view_total: {
-                //TODO: viewTotalBrachos();
+                showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
+                return true;
+            }
+            case R.id.action_view_total_breakdown: {
+                launchTotalBreakdown(mTotalBrachosDescriptions, mTotalBrachosNumbers);
                 return true;
             }
             case R.id.about: {
@@ -117,13 +170,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 return true;
             }
             case android.R.id.home: {
-                super.finish();
+                onBackPressed();
+                return true;
+            }
+            case R.id.action_clear: {
+                showSnackbar("Cannot clear in settings menu.");
                 return true;
             }
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSnackbar(String snackbarText) {
+        View cl = getListView();
+        Snackbar sb = Snackbar.make(cl, snackbarText,
+                Snackbar.LENGTH_LONG);
+        sb.show();
+    }
+
+    public void launchTotalBreakdown(ArrayList<String> brachosDescriptions, ArrayList<Integer> brachosNumbers) {
+        Intent intent = new Intent(this, BrachosBreakdownActivity.class);
+        intent.putStringArrayListExtra("description", brachosDescriptions);
+        intent.putIntegerArrayListExtra("amount", brachosNumbers);
+        startActivity(intent);
+    }
+
+    protected int getTotalBrachos() {
+        int counter = 0;
+        for (Integer brachosNumber : mTotalBrachosNumbers) {
+            counter += brachosNumber;
+        }
+        return counter;
+
     }
 
     // This method is called from the onClick property of the menu item "About"

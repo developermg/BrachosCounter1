@@ -33,6 +33,7 @@ public class DaveningActivity extends BrachosCounterActivity {
     ArrayList<String> totalBrachosDescriptions;
     Boolean mPrefMale;
     Boolean mPrefYotzerHameoros;
+    Boolean flagWentToSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class DaveningActivity extends BrachosCounterActivity {
         setContentView(R.layout.activity_davening);
         processIncomingData();
         restorePreferencesSavedFromSettingsActivity();
+        flagWentToSettings = false;
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -115,12 +117,7 @@ public class DaveningActivity extends BrachosCounterActivity {
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+
     //get selected Brachos gets an arraylist of the numbers for the brachos selected
     private ArrayList<Integer> getSelectedBrachosNumbers() {
         ArrayList<Integer> brachosNumbers = new ArrayList<>();
@@ -159,6 +156,10 @@ public class DaveningActivity extends BrachosCounterActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (flagWentToSettings) {
+            flagWentToSettings = false;
+            recreate();
+        }
 
     }
 
@@ -169,6 +170,7 @@ public class DaveningActivity extends BrachosCounterActivity {
         {
             case R.id.action_settings: {
                 launchSettings(totalBrachosDescriptions,totalBrachosNumbers);
+                flagWentToSettings = true;
                 return true;
             }
             case R.id.action_view_total: {
