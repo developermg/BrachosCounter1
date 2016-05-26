@@ -20,9 +20,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-//import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BrachosCounterActivity
 {
 
     private final static String sPREFS_FIELDS = "PREFS_FIELDS";
@@ -45,9 +44,12 @@ public class MainActivity extends AppCompatActivity
         setContentView (R.layout.activity_main);
         brachosDescriptions = new ArrayList<> ();
         brachosNumbers = new ArrayList<> ();
-        brachosDescriptionsToAdd = new ArrayList<> ();
-        brachosNumbersToAdd = new ArrayList<> ();
+     //   brachosDescriptionsToAdd = new ArrayList<> ();
+       // brachosNumbersToAdd = new ArrayList<> ();
+        // restorePreferencesSavedFromSettingsActivity();
+        //restoreNonSettingsActivityPreferences ();
         PreferenceManager.setDefaultValues (this, R.xml.pref_general, true);
+
     }
 
 
@@ -60,16 +62,16 @@ public class MainActivity extends AppCompatActivity
                 case MULTI_BRACHOS_MULTIPLE_REQUEST_CODE:
                     ArrayList<Integer> numbers = data.getIntegerArrayListExtra ("BRACHOS_NUMBERS");
                     if (!numbers.isEmpty ()) {
-                        brachosDescriptionsToAdd.addAll (
-                                data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"));
-                        brachosNumbersToAdd.addAll (numbers);
+                        super.addBrachos(data.getStringArrayListExtra ("BRACHOS_DESCRIPTIONS"),numbers);
+
                     }
                     break;
                 case MULTI_BRACHOS_REQUEST_CODE:
                     int number = data.getIntExtra ("BRACHOS_NUMBER", 1);
                     if (number > 0) {
-                        brachosDescriptionsToAdd.add (data.getStringExtra ("BRACHOS_DESCRIPTION"));
-                        brachosNumbersToAdd.add (number);
+
+                        super.addBrachos(data.getStringExtra ("BRACHOS_DESCRIPTION"), number);
+
                     }
                     break;
 
@@ -135,33 +137,30 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    @Override
+ /*   @Override
     protected void onStart ()
     {
         super.onStart ();
-        // restorePreferencesSavedFromSettingsActivity();
-        restoreNonSettingsActivityPreferences ();
+
         addBrachosFromRestoredActivity ();
 
-    }
+    }*/
 
     //TODO: Do we need an onResume to restore things?
-    @Override
+   /* @Override
     protected void onResume ()
     {
         super.onResume ();
-       /* applyNightModePreference();
-        showHideBackground ();*/
-    }
+    }*/
 
-    @Override
+   /* @Override
     protected void onStop ()
     {
         super.onStop ();
         saveNonSettingsActivityPreferences ();
-    }
+    }*/
 
-    private void restorePreferencesSavedFromSettingsActivity ()
+   /*private void restorePreferencesSavedFromSettingsActivity ()
     {
         String currentKey;
         String currentDefaultValue;
@@ -180,10 +179,10 @@ public class MainActivity extends AppCompatActivity
 
         currentKey = getString(R.string.male_option);
         mPrefMale = defaultSharedPreferences.getBoolean(currentKey, false);
-    }
+    }*/
 
 
-    private void restoreNonSettingsActivityPreferences ()
+    /*private void restoreNonSettingsActivityPreferences ()
     {
         SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE);
         String descriptionString = settings.getString (sBRACHOS_DESCRIPTION, "");
@@ -201,23 +200,11 @@ public class MainActivity extends AppCompatActivity
 
 
 
-       /*
-        String numbersString=settings.getString(sBRACHOS_NUMBERS,"");
-        brachosNumbers=(ArrayList<Integer>)restoreListFromJSON(numbersString);
-        brachosDescriptions=(ArrayList<String>)restoreListFromJSON(descriptionString);*/
-       /*  String currentString;
-      //MP==0
 
-       currentString =
-                settings.getString (mSUBTOTAL_PREF_KEY, mSubTotalField.getText ().toString ());
-        mSubTotalField.setText (currentString);
 
-        currentString = settings.getString (mPAYERS_PREF_KEY, mPayersField.getText ().toString ());
-        mPayersField.setText (currentString);
-*/
-    }
+    }*/
 
-    private void saveNonSettingsActivityPreferences ()
+   /* private void saveNonSettingsActivityPreferences ()
     {
         SharedPreferences settings = getSharedPreferences (sPREFS_FIELDS, MODE_PRIVATE); //MP==0
         SharedPreferences.Editor settingsEditor = settings.edit ();
@@ -230,14 +217,14 @@ public class MainActivity extends AppCompatActivity
         settingsEditor.putString (sBRACHOS_NUMBERS, jsonBrachosNumbers);
         // Tax and tip are derived from values stored automatically via Settings Activity
         // So we need to store only the other two EditTexts
-        //TODO: add our prefs
+        //TODO: add our prefs*/
      /*
         */
         // settingsEditor.putString (mSUBTOTAL_PREF_KEY, mSubTotalField.getText ().toString ());
         //settingsEditor.putString (mPAYERS_PREF_KEY, mPayersField.getText ().toString ());
 
-        settingsEditor.apply ();
-    }
+     //   settingsEditor.apply ();
+  //  }
 
     private String getJSON (ArrayList obj)
     {
@@ -265,7 +252,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void addBrachosFromRestoredActivity ()
+  /*  private void addBrachosFromRestoredActivity ()
     {
         //TODO: Increment instead of add all
         brachosDescriptions.addAll (brachosDescriptionsToAdd);
@@ -273,27 +260,23 @@ public class MainActivity extends AppCompatActivity
 
         brachosNumbers.addAll (brachosNumbersToAdd);
         brachosNumbersToAdd.clear ();
-    }
+    }*/
 
     public void viewTotalBrachos (View view)
     {
-        viewTotalBrachos ();
+        viewTotalBrachos();
     }
 
-    private void viewTotalBrachos ()
+
+    public void viewTotalBrachos ()
     {
-        int counter = 0;
-     for (Integer brachosNumber : brachosNumbers) {
-            counter += brachosNumber;
-        }
-        String snackbarText=getString(R.string.total_brachos) + " " +counter;
-      showSnackbar(snackbarText);
+        showSnackbar(getString(R.string.total_brachos) + " " + getTotalBrachos());
     }
 
     public void clearBrachos (View view)
     {
         //call addBrachosFromRestoredActivity to flush the 'ToAdd' ArrayLists if click before they are flushed
-        addBrachosFromRestoredActivity ();
+        //addBrachosFromRestoredActivity ();
         brachosDescriptions.clear ();
         brachosNumbers.clear ();
         showSnackbar("Brachos cleared.");
