@@ -116,13 +116,16 @@ public class BrachosCounterActivity extends AppCompatActivity {
         return counter;
 
     }
-    public void clearBrachos (View view)
+    protected void clearBrachos (View view)
     {
         //call addBrachosFromRestoredActivity to flush the 'ToAdd' ArrayLists if click before they are flushed
         //addBrachosFromRestoredActivity ();
+        clearBrachos();
+
+    }
+    public void clearBrachos(){
         brachosDescriptions.clear ();
         brachosNumbers.clear ();
-
     }
 
     private void restoreNonSettingsActivityPreferences () {

@@ -275,10 +275,7 @@ public class MainActivity extends BrachosCounterActivity
 
     public void clearBrachos (View view)
     {
-        //call addBrachosFromRestoredActivity to flush the 'ToAdd' ArrayLists if click before they are flushed
-        //addBrachosFromRestoredActivity ();
-        brachosDescriptions.clear ();
-        brachosNumbers.clear ();
+        super.clearBrachos();
         showSnackbar("Brachos cleared.");
     }
 
